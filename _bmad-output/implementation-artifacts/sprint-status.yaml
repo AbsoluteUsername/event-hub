@@ -46,7 +46,7 @@ development_status:
   1-2-domain-model-and-application-layer: review
   1-3-infrastructure-layer-and-database-setup: review
   1-4-api-scaffold-and-configuration: review
-  1-5-azure-function-scaffold: backlog
+  1-5-azure-function-scaffold: review
   1-6-angular-spa-foundation-and-glass-theme: backlog
   epic-1-retrospective: optional
 
