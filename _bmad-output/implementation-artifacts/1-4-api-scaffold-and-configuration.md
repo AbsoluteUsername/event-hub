@@ -1,6 +1,6 @@
 # Story 1.4: API Scaffold & Configuration
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -30,71 +30,71 @@ so that the API is runnable and ready for endpoint implementation.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Remove WeatherForecast template code (AC: #7)
-  - [ ] Delete `src/EventHub.Api/Controllers/WeatherForecastController.cs`
-  - [ ] Delete `src/EventHub.Api/WeatherForecast.cs`
-  - [ ] Delete `src/EventHub.Api/EventHub.Api.http` (REST client test file for WeatherForecast)
-  - [ ] Verify `dotnet build` still succeeds after removal
+- [x] Task 1: Remove WeatherForecast template code (AC: #7)
+  - [x] Delete `src/EventHub.Api/Controllers/WeatherForecastController.cs`
+  - [x] Delete `src/EventHub.Api/WeatherForecast.cs`
+  - [x] Delete `src/EventHub.Api/EventHub.Api.http` (REST client test file for WeatherForecast)
+  - [x] Verify `dotnet build` still succeeds after removal
 
-- [ ] Task 2: Install NuGet packages and configure Serilog (AC: #1)
-  - [ ] Add `Serilog.AspNetCore` package to EventHub.Api project (use version compatible with .NET 8 LTS)
-  - [ ] Add `Serilog.Sinks.Console` package to EventHub.Api project
-  - [ ] Configure Serilog in `Program.cs` using `builder.Host.UseSerilog()` with Console sink
-  - [ ] Add `app.UseSerilogRequestLogging()` to middleware pipeline
-  - [ ] Remove default `Logging` section from `appsettings.json` (Serilog replaces built-in logging)
+- [x] Task 2: Install NuGet packages and configure Serilog (AC: #1)
+  - [x] Add `Serilog.AspNetCore` package to EventHub.Api project (use version compatible with .NET 8 LTS)
+  - [x] Add `Serilog.Sinks.Console` package to EventHub.Api project
+  - [x] Configure Serilog in `Program.cs` using `builder.Host.UseSerilog()` with Console sink
+  - [x] Add `app.UseSerilogRequestLogging()` to middleware pipeline
+  - [x] Remove default `Logging` section from `appsettings.json` (Serilog replaces built-in logging)
 
-- [ ] Task 3: Create Application layer DI extension (AC: #1)
-  - [ ] Create `src/EventHub.Application/Extensions/ServiceCollectionExtensions.cs` with `AddApplication()` method
-  - [ ] Register any Application-layer services (currently placeholder — no services to register yet, but method must exist for composition root)
+- [x] Task 3: Create Application layer DI extension (AC: #1)
+  - [x] Create `src/EventHub.Application/Extensions/ServiceCollectionExtensions.cs` with `AddApplication()` method
+  - [x] Register any Application-layer services (currently placeholder — no services to register yet, but method must exist for composition root)
 
-- [ ] Task 4: Configure Program.cs composition root (AC: #1)
-  - [ ] Add `builder.Services.AddApplication()` call
-  - [ ] Add `builder.Services.AddInfrastructure(builder.Configuration)` call (requires Story 1.3 to provide `AddInfrastructure` — see Dependencies)
-  - [ ] Configure CORS: `AllowFrontendDev` policy for Development (`http://localhost:4200`), restricted for Production
-  - [ ] Ensure `app.UseHttpsRedirection()` is present (already exists)
-  - [ ] Ensure Swagger is enabled in Development (already exists)
-  - [ ] Add `app.UseCors()` to middleware pipeline (BEFORE `app.UseAuthorization()`)
-  - [ ] Add ExceptionHandlingMiddleware to pipeline (BEFORE other middleware)
-  - [ ] Update middleware pipeline order: ExceptionHandling → Serilog Request Logging → CORS → HTTPS → Swagger → Auth → Controllers
+- [x] Task 4: Configure Program.cs composition root (AC: #1)
+  - [x] Add `builder.Services.AddApplication()` call
+  - [x] Add `builder.Services.AddInfrastructure(builder.Configuration)` call (requires Story 1.3 to provide `AddInfrastructure` — see Dependencies)
+  - [x] Configure CORS: `AllowFrontendDev` policy for Development (`http://localhost:4200`), restricted for Production
+  - [x] Ensure `app.UseHttpsRedirection()` is present (already exists)
+  - [x] Ensure Swagger is enabled in Development (already exists)
+  - [x] Add `app.UseCors()` to middleware pipeline (BEFORE `app.UseAuthorization()`)
+  - [x] Add ExceptionHandlingMiddleware to pipeline (BEFORE other middleware)
+  - [x] Update middleware pipeline order: ExceptionHandling → Serilog Request Logging → CORS → HTTPS → Swagger → Auth → Controllers
 
-- [ ] Task 5: Create ExceptionHandlingMiddleware (AC: #4)
-  - [ ] Create `src/EventHub.Api/Middleware/ExceptionHandlingMiddleware.cs`
-  - [ ] Implement `IMiddleware` pattern or RequestDelegate pattern
-  - [ ] Catch all unhandled exceptions
-  - [ ] Log exception details via Serilog (structured: `Log.Error(ex, "Unhandled exception")`)
-  - [ ] Return HTTP 500 with body: `{"errors": {"server": "An unexpected error occurred."}}`
-  - [ ] Set `Content-Type: application/json` on error response
-  - [ ] Create extension method `UseExceptionHandling()` for clean Program.cs registration
+- [x] Task 5: Create ExceptionHandlingMiddleware (AC: #4)
+  - [x] Create `src/EventHub.Api/Middleware/ExceptionHandlingMiddleware.cs`
+  - [x] Implement `IMiddleware` pattern or RequestDelegate pattern
+  - [x] Catch all unhandled exceptions
+  - [x] Log exception details via Serilog (structured: `Log.Error(ex, "Unhandled exception")`)
+  - [x] Return HTTP 500 with body: `{"errors": {"server": "An unexpected error occurred."}}`
+  - [x] Set `Content-Type: application/json` on error response
+  - [x] Create extension method `UseExceptionHandling()` for clean Program.cs registration
 
-- [ ] Task 6: Create EventsController stub (AC: #2)
-  - [ ] Create `src/EventHub.Api/Controllers/EventsController.cs`
-  - [ ] Add `[ApiController]` and `[Route("api/events")]` attributes
-  - [ ] Add `[HttpPost]` method `Create` returning `StatusCode(StatusCodes.Status501NotImplemented)`
-  - [ ] Add `[HttpGet]` method `GetAll` returning `StatusCode(StatusCodes.Status501NotImplemented)`
-  - [ ] Use proper async signatures: `Task<IActionResult>`
+- [x] Task 6: Create EventsController stub (AC: #2)
+  - [x] Create `src/EventHub.Api/Controllers/EventsController.cs`
+  - [x] Add `[ApiController]` and `[Route("api/events")]` attributes
+  - [x] Add `[HttpPost]` method `Create` returning `StatusCode(StatusCodes.Status501NotImplemented)`
+  - [x] Add `[HttpGet]` method `GetAll` returning `StatusCode(StatusCodes.Status501NotImplemented)`
+  - [x] Use proper async signatures: `Task<IActionResult>`
 
-- [ ] Task 7: Create NegotiateController stub (AC: #3)
-  - [ ] Create `src/EventHub.Api/Controllers/NegotiateController.cs`
-  - [ ] Add `[ApiController]` and `[Route("api/negotiate")]` attributes
-  - [ ] Add `[HttpPost]` method returning `StatusCode(StatusCodes.Status501NotImplemented)`
+- [x] Task 7: Create NegotiateController stub (AC: #3)
+  - [x] Create `src/EventHub.Api/Controllers/NegotiateController.cs`
+  - [x] Add `[ApiController]` and `[Route("api/negotiate")]` attributes
+  - [x] Add `[HttpPost]` method returning `StatusCode(StatusCodes.Status501NotImplemented)`
 
-- [ ] Task 8: Update configuration files (AC: #5)
-  - [ ] Update `appsettings.json` with ConnectionStrings section: `"DefaultConnection": ""` and `"ServiceBus": ""`
-  - [ ] Update `appsettings.Development.json` with development connection string placeholders
-  - [ ] Add Serilog configuration section to `appsettings.json` (MinimumLevel, WriteTo Console)
-  - [ ] Add CORS origins configuration: `"AllowedOrigins": ["http://localhost:4200"]` in Development
+- [x] Task 8: Update configuration files (AC: #5)
+  - [x] Update `appsettings.json` with ConnectionStrings section: `"DefaultConnection": ""` and `"ServiceBus": ""`
+  - [x] Update `appsettings.Development.json` with development connection string placeholders
+  - [x] Add Serilog configuration section to `appsettings.json` (MinimumLevel, WriteTo Console)
+  - [x] Add CORS origins configuration: `"AllowedOrigins": ["http://localhost:4200"]` in Development
 
-- [ ] Task 9: Update launchSettings.json for correct ports (AC: #6)
-  - [ ] Update HTTPS URL to `https://localhost:5001` (architecture spec) and HTTP to `http://localhost:5000`
-  - [ ] Ensure `ASPNETCORE_ENVIRONMENT` is set to `Development`
-  - [ ] Keep `launchUrl: "swagger"` for Swagger UI on startup
+- [x] Task 9: Update launchSettings.json for correct ports (AC: #6)
+  - [x] Update HTTPS URL to `https://localhost:5001` (architecture spec) and HTTP to `http://localhost:5000`
+  - [x] Ensure `ASPNETCORE_ENVIRONMENT` is set to `Development`
+  - [x] Keep `launchUrl: "swagger"` for Swagger UI on startup
 
-- [ ] Task 10: Build verification (AC: #8)
-  - [ ] Run `dotnet build` for entire solution — verify 0 errors, 0 warnings
-  - [ ] Run `dotnet run --project src/EventHub.Api` — verify API starts on https://localhost:5001
-  - [ ] Verify Swagger UI is accessible at `/swagger`
-  - [ ] Verify CORS headers are present for localhost:4200 origin
-  - [ ] Run `dotnet test` — verify all existing tests pass
+- [x] Task 10: Build verification (AC: #8)
+  - [x] Run `dotnet build` for entire solution — verify 0 errors, 0 warnings
+  - [x] Run `dotnet run --project src/EventHub.Api` — verify API starts on https://localhost:5001
+  - [x] Verify Swagger UI is accessible at `/swagger`
+  - [x] Verify CORS headers are present for localhost:4200 origin
+  - [x] Run `dotnet test` — verify all existing tests pass
 
 ## Dev Notes
 
@@ -286,10 +286,57 @@ src/EventHub.Api/
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Opus 4.6
 
 ### Debug Log References
 
+- Story 1.3 dependency (AddInfrastructure) was already implemented — proceeded with Option A.
+- Serilog.AspNetCore 10.0.0 installed (latest compatible with .NET 8).
+- Added Microsoft.Extensions.DependencyInjection.Abstractions 8.0.* to Application project for AddApplication() extension.
+- Configured InvalidModelStateResponseFactory to match FR23 error format for 400 responses.
+- CORS policy reads AllowedOrigins from configuration, falling back to localhost:4200.
+- Removed IIS Express profile from launchSettings.json (not needed).
+
 ### Completion Notes List
 
+- **Task 1:** Deleted WeatherForecastController.cs, WeatherForecast.cs, and EventHub.Api.http. Build verified clean.
+- **Task 2:** Installed Serilog.AspNetCore 10.0.0 and Serilog.Sinks.Console 6.1.1. Replaced default Logging section with Serilog config in appsettings.json.
+- **Task 3:** Created Application/Extensions/ServiceCollectionExtensions.cs with placeholder AddApplication() method. Added DI abstractions NuGet package.
+- **Task 4:** Fully configured Program.cs composition root with AddApplication(), AddInfrastructure(), Serilog, CORS (AllowFrontend policy with AllowCredentials for SignalR), and correct middleware pipeline order.
+- **Task 5:** Created ExceptionHandlingMiddleware using RequestDelegate pattern. Returns FR23-compliant JSON error format. Includes UseExceptionHandling() extension method.
+- **Task 6:** Created EventsController with [ApiController][Route("api/events")], HttpPost Create and HttpGet GetAll stubs returning 501.
+- **Task 7:** Created NegotiateController with [ApiController][Route("api/negotiate")], HttpPost stub returning 501.
+- **Task 8:** Updated appsettings.json with ConnectionStrings (empty placeholders), Serilog config. Updated appsettings.Development.json with dev connection strings and CORS origins.
+- **Task 9:** Updated launchSettings.json ports from 7010/5222 to 5001/5000 per architecture spec.
+- **Task 10:** Full solution build: 0 errors, 0 warnings. All 8 tests pass (7 Api + 1 Function). New tests: 6 tests covering ExceptionHandlingMiddleware (3), EventsController (2), NegotiateController (1).
+
 ### File List
+
+**New files:**
+- src/EventHub.Api/Controllers/EventsController.cs
+- src/EventHub.Api/Controllers/NegotiateController.cs
+- src/EventHub.Api/Middleware/ExceptionHandlingMiddleware.cs
+- src/EventHub.Application/Extensions/ServiceCollectionExtensions.cs
+- tests/EventHub.Api.Tests/Middleware/ExceptionHandlingMiddlewareTests.cs
+- tests/EventHub.Api.Tests/Controllers/EventsControllerTests.cs
+- tests/EventHub.Api.Tests/Controllers/NegotiateControllerTests.cs
+
+**Modified files:**
+- src/EventHub.Api/Program.cs
+- src/EventHub.Api/EventHub.Api.csproj
+- src/EventHub.Api/appsettings.json
+- src/EventHub.Api/appsettings.Development.json
+- src/EventHub.Api/Properties/launchSettings.json
+- src/EventHub.Application/EventHub.Application.csproj
+- tests/EventHub.Api.Tests/EventHub.Api.Tests.csproj
+- _bmad-output/implementation-artifacts/sprint-status.yaml
+- _bmad-output/implementation-artifacts/1-4-api-scaffold-and-configuration.md
+
+**Deleted files:**
+- src/EventHub.Api/Controllers/WeatherForecastController.cs
+- src/EventHub.Api/WeatherForecast.cs
+- src/EventHub.Api/EventHub.Api.http
+
+## Change Log
+
+- 2026-02-23: Story 1.4 implemented — API scaffold with Serilog logging, CORS, ExceptionHandlingMiddleware, controller stubs (Events, Negotiate), configuration files with connection string placeholders, ports updated to 5001/5000. All ACs satisfied. 8 tests pass (6 new + 2 existing).
