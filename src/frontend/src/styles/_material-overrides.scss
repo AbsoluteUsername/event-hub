@@ -1,0 +1,50 @@
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: (
+      theme-type: dark,
+    ),
+    typography: Inter,
+    density: 0,
+  ));
+
+  // Override M3 system tokens to match Glass design
+  & {
+    --mat-sys-primary: #7c3aed;
+    --mat-sys-on-primary: #ffffff;
+    --mat-sys-surface: #111111;
+    --mat-sys-on-surface: #ededed;
+    --mat-sys-background: #060714;
+    --mat-sys-on-background: #ededed;
+    --mat-sys-surface-container: #111111;
+    --mat-sys-surface-container-low: #0a0a0a;
+    --mat-sys-surface-container-high: #1a1a1a;
+    --mat-sys-outline: #1f1f1f;
+    --mat-sys-error: #ef4444;
+  }
+}
+
+// Form field overrides
+.mat-mdc-form-field {
+  --mdc-filled-text-field-container-color: var(--bg-surface);
+  --mdc-outlined-text-field-outline-color: var(--border);
+  --mdc-outlined-text-field-focus-outline-color: var(--border-focus);
+}
+
+// Table overrides
+.mat-mdc-table {
+  --mat-table-background-color: var(--bg-surface);
+  --mat-table-row-item-outline-color: var(--border);
+}
+
+// Paginator overrides
+.mat-mdc-paginator {
+  --mat-paginator-container-background-color: var(--bg-surface);
+}
+
+// Snackbar overrides
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: var(--bg-elevated);
+  --mdc-snackbar-supporting-text-color: var(--text-primary);
+}

@@ -1,6 +1,6 @@
 # Story 1.6: Angular SPA Foundation & Glass Theme
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -38,14 +38,14 @@ so that the frontend is runnable with the visual foundation ready for feature co
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Remove prebuilt theme and install NgRx (AC: #1, #6)
-  - [ ] Remove `@angular/material/prebuilt-themes/azure-blue.css` from `angular.json` styles array
-  - [ ] Run `npm install @ngrx/store@19 @ngrx/effects@19 @ngrx/store-devtools@19` (use v19 to match Angular 19)
-  - [ ] Verify `npm install` completes without errors
+- [x] Task 1: Remove prebuilt theme and install NgRx (AC: #1, #6)
+  - [x]Remove `@angular/material/prebuilt-themes/azure-blue.css` from `angular.json` styles array
+  - [x]Run `npm install @ngrx/store@19 @ngrx/effects@19 @ngrx/store-devtools@19` (use v19 to match Angular 19)
+  - [x]Verify `npm install` completes without errors
 
-- [ ] Task 2: Create SCSS architecture (AC: #2, #3, #9)
-  - [ ] Create directory `src/styles/`
-  - [ ] Create `src/styles/_variables.scss` with ALL CSS custom properties from the UX spec Color System:
+- [x] Task 2: Create SCSS architecture (AC: #2, #3, #9)
+  - [x]Create directory `src/styles/`
+  - [x]Create `src/styles/_variables.scss` with ALL CSS custom properties from the UX spec Color System:
     ```scss
     :root {
       // Backgrounds
@@ -90,7 +90,7 @@ so that the frontend is runnable with the visual foundation ready for feature co
       --glass-radius: 16px;
     }
     ```
-  - [ ] Create `src/styles/_glass.scss`:
+  - [x]Create `src/styles/_glass.scss`:
     ```scss
     @mixin glass-panel($padding: 24px) {
       background: var(--glass-bg);
@@ -105,14 +105,14 @@ so that the frontend is runnable with the visual foundation ready for feature co
       @include glass-panel(12px);
     }
     ```
-  - [ ] Create `src/styles/_typography.scss` with Inter + JetBrains Mono `@font-face` fallback declarations and type scale classes (`.text-xs`, `.text-sm`, `.text-base`, `.text-md`, `.text-lg`, `.mono-sm`, `.mono-base`)
-  - [ ] Create `src/styles/_material-overrides.scss` with Angular Material M3 theme definition:
+  - [x]Create `src/styles/_typography.scss` with Inter + JetBrains Mono `@font-face` fallback declarations and type scale classes (`.text-xs`, `.text-sm`, `.text-base`, `.text-md`, `.text-lg`, `.mono-sm`, `.mono-base`)
+  - [x]Create `src/styles/_material-overrides.scss` with Angular Material M3 theme definition:
     - Use `@use '@angular/material' as mat;`
     - Generate or define a violet-based M3 palette
     - Apply `mat.theme()` mixin with `theme-type: dark` and violet primary
     - Override `--mat-sys-surface` to `#111111`, `--mat-sys-background` to `#060714`
     - Override form field, table, paginator, and snackbar surfaces to match Glass aesthetic
-  - [ ] Update `src/styles.scss` to import all partials and apply base body styles:
+  - [x]Update `src/styles.scss` to import all partials and apply base body styles:
     ```scss
     @use './styles/material-overrides';
     @use './styles/variables';
@@ -136,28 +136,28 @@ so that the frontend is runnable with the visual foundation ready for feature co
     }
     ```
 
-- [ ] Task 3: Update index.html (AC: #4)
-  - [ ] Replace Roboto Google Fonts link with Inter (400, 500, 600) + JetBrains Mono (400):
+- [x] Task 3: Update index.html (AC: #4)
+  - [x]Replace Roboto Google Fonts link with Inter (400, 500, 600) + JetBrains Mono (400):
     ```html
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     ```
-  - [ ] Keep Material Icons link (still needed for `mat-icon`)
-  - [ ] Update `<title>` from "Frontend" to "Event Hub"
+  - [x]Keep Material Icons link (still needed for `mat-icon`)
+  - [x]Update `<title>` from "Frontend" to "Event Hub"
 
-- [ ] Task 4: Create GlassPanelComponent (AC: #5)
-  - [ ] Create directory `src/app/shared/components/glass-panel/`
-  - [ ] Create `glass-panel.component.ts` — standalone component with:
+- [x] Task 4: Create GlassPanelComponent (AC: #5)
+  - [x]Create directory `src/app/shared/components/glass-panel/`
+  - [x]Create `glass-panel.component.ts` — standalone component with:
     - Selector: `app-glass-panel`
     - `@Input() compact: boolean = false`
     - Template: `<div [class.glass-panel]="!compact" [class.glass-panel-compact]="compact"><ng-content></ng-content></div>`
     - SCSS: Apply `@include glass-panel()` and `@include glass-panel-compact` from `_glass.scss`
-  - [ ] Create `glass-panel.component.spec.ts` with basic render test
+  - [x]Create `glass-panel.component.spec.ts` with basic render test
 
-- [ ] Task 5: Configure NgRx store shell (AC: #6)
-  - [ ] Create directory `src/app/store/`
-  - [ ] Create `src/app/store/events/events.reducer.ts` with empty state:
+- [x] Task 5: Configure NgRx store shell (AC: #6)
+  - [x]Create directory `src/app/store/`
+  - [x]Create `src/app/store/events/events.reducer.ts` with empty state:
     ```typescript
     import { createReducer } from '@ngrx/store';
     export interface EventsState {
@@ -174,7 +174,7 @@ so that the frontend is runnable with the visual foundation ready for feature co
     };
     export const eventsReducer = createReducer(initialEventsState);
     ```
-  - [ ] Create `src/app/store/submission/submission.reducer.ts` with empty state:
+  - [x]Create `src/app/store/submission/submission.reducer.ts` with empty state:
     ```typescript
     import { createReducer } from '@ngrx/store';
     export interface SubmissionState {
@@ -187,7 +187,7 @@ so that the frontend is runnable with the visual foundation ready for feature co
     };
     export const submissionReducer = createReducer(initialSubmissionState);
     ```
-  - [ ] Create `src/app/store/signalr/signalr.reducer.ts` with empty state:
+  - [x]Create `src/app/store/signalr/signalr.reducer.ts` with empty state:
     ```typescript
     import { createReducer } from '@ngrx/store';
     export interface SignalrState {
@@ -198,7 +198,7 @@ so that the frontend is runnable with the visual foundation ready for feature co
     };
     export const signalrReducer = createReducer(initialSignalrState);
     ```
-  - [ ] Create `src/app/store/index.ts` with root AppState interface:
+  - [x]Create `src/app/store/index.ts` with root AppState interface:
     ```typescript
     import { EventsState } from './events/events.reducer';
     import { SubmissionState } from './submission/submission.reducer';
@@ -210,13 +210,13 @@ so that the frontend is runnable with the visual foundation ready for feature co
     }
     ```
 
-- [ ] Task 6: Update app.config.ts (AC: #6)
-  - [ ] Import `provideStore` from `@ngrx/store`, `provideEffects` from `@ngrx/effects`, `provideStoreDevtools` from `@ngrx/store-devtools`
-  - [ ] Import `provideHttpClient`, `withInterceptors` from `@angular/common/http`
-  - [ ] Import `provideAnimationsAsync` from `@angular/platform-browser/animations/async`
-  - [ ] Import all three reducers
-  - [ ] **CRITICAL:** Use `provideStore()` NOT `StoreModule.forRoot()` (Enforcement Rule #9)
-  - [ ] Configuration:
+- [x] Task 6: Update app.config.ts (AC: #6)
+  - [x]Import `provideStore` from `@ngrx/store`, `provideEffects` from `@ngrx/effects`, `provideStoreDevtools` from `@ngrx/store-devtools`
+  - [x]Import `provideHttpClient`, `withInterceptors` from `@angular/common/http`
+  - [x]Import `provideAnimationsAsync` from `@angular/platform-browser/animations/async`
+  - [x]Import all three reducers
+  - [x]**CRITICAL:** Use `provideStore()` NOT `StoreModule.forRoot()` (Enforcement Rule #9)
+  - [x]Configuration:
     ```typescript
     export const appConfig: ApplicationConfig = {
       providers: [
@@ -234,25 +234,25 @@ so that the frontend is runnable with the visual foundation ready for feature co
     };
     ```
 
-- [ ] Task 7: Update environment files (AC: #7)
-  - [ ] Update `src/environments/environment.ts`:
+- [x] Task 7: Update environment files (AC: #7)
+  - [x]Update `src/environments/environment.ts`:
     ```typescript
     export const environment = {
       production: false,
       apiUrl: 'https://localhost:5001'
     };
     ```
-  - [ ] Update `src/environments/environment.development.ts`:
+  - [x]Update `src/environments/environment.development.ts`:
     ```typescript
     export const environment = {
       production: false,
       apiUrl: 'https://localhost:5001'
     };
     ```
-  - [ ] **NOTE:** The current project has `environment.ts` and `environment.development.ts` (Angular 19 default). The architecture doc expects `environment.ts` (prod) and `environment.prod.ts`. Check `angular.json` fileReplacements to determine which is the production config and update accordingly. Ensure the dev config points to `https://localhost:5001` and prod has `https://production-api.com`.
+  - [x]**NOTE:** The current project has `environment.ts` and `environment.development.ts` (Angular 19 default). The architecture doc expects `environment.ts` (prod) and `environment.prod.ts`. Check `angular.json` fileReplacements to determine which is the production config and update accordingly. Ensure the dev config points to `https://localhost:5001` and prod has `https://production-api.com`.
 
-- [ ] Task 8: Update AppComponent shell (AC: #8)
-  - [ ] Replace the entire default template (`app.component.html`) with the shell layout:
+- [x] Task 8: Update AppComponent shell (AC: #8)
+  - [x]Replace the entire default template (`app.component.html`) with the shell layout:
     ```html
     <header class="app-header">
       <h1 class="app-title">Event Hub</h1>
@@ -264,10 +264,10 @@ so that the frontend is runnable with the visual foundation ready for feature co
       </app-glass-panel>
     </main>
     ```
-  - [ ] Update `app.component.ts`:
+  - [x]Update `app.component.ts`:
     - Import `GlassPanelComponent` in the `imports` array
     - Update title to `'Event Hub'`
-  - [ ] Add `app.component.scss` styles:
+  - [x]Add `app.component.scss` styles:
     ```scss
     :host {
       display: flex;
@@ -302,13 +302,13 @@ so that the frontend is runnable with the visual foundation ready for feature co
       padding: 48px 0;
     }
     ```
-  - [ ] Update `app.component.spec.ts` to match new template (remove old tests for default content)
+  - [x]Update `app.component.spec.ts` to match new template (remove old tests for default content)
 
-- [ ] Task 9: Build and lint verification (AC: #10)
-  - [ ] Run `ng lint` — verify 0 errors
-  - [ ] Run `ng build` — verify successful build
-  - [ ] Run `ng serve` — verify app starts on `localhost:4200`
-  - [ ] Visually confirm: dark background (`#060714`), violet/navy gradient overlays, Glass-themed shell with "Event Hub" header
+- [x] Task 9: Build and lint verification (AC: #10)
+  - [x]Run `ng lint` — verify 0 errors
+  - [x]Run `ng build` — verify successful build
+  - [x]Run `ng serve` — verify app starts on `localhost:4200`
+  - [x]Visually confirm: dark background (`#060714`), violet/navy gradient overlays, Glass-themed shell with "Event Hub" header
 
 ## Dev Notes
 
@@ -542,10 +542,57 @@ src/EventHub.Function/                ← No changes
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Opus 4.6
 
 ### Debug Log References
 
+- Fixed lint error: `any[]` → `unknown[]` in EventsState.items (ESLint no-explicit-any)
+- Fixed build error: installed `@angular/animations@^19.2.0` (required by `provideAnimationsAsync()`)
+- Fixed Sass deprecation: wrapped CSS custom properties in `& {}` block after `@include mat.theme()` to comply with Sass mixed-decls deprecation
+
 ### Completion Notes List
 
+- Task 1: Removed Azure Blue prebuilt theme from angular.json (build + test configs). Installed @ngrx/store@19, @ngrx/effects@19, @ngrx/store-devtools@19.
+- Task 2: Created full SCSS architecture: _variables.scss (all UX spec tokens), _glass.scss (glassmorphism mixin with -webkit- prefix), _typography.scss (Inter + JetBrains Mono font-face + type scale classes), _material-overrides.scss (M3 dark theme with violet primary + Glass surface overrides). Updated styles.scss with all imports and body styles including gradient overlays.
+- Task 3: Updated index.html: replaced Roboto with Inter + JetBrains Mono from Google Fonts CDN, added preconnect hints, updated title to "Event Hub". Kept Material Icons link.
+- Task 4: Created standalone GlassPanelComponent with ng-content projection, default (24px) and compact (12px) variants. Added unit tests for default/compact rendering.
+- Task 5: Created NgRx store shell with three empty reducer slices (events, submission, signalr) and root AppState interface in store/index.ts. Used `unknown[]` instead of `any[]` for ESLint compliance.
+- Task 6: Updated app.config.ts with provideStore(), provideEffects([]), provideStoreDevtools(), provideHttpClient(withInterceptors([])), provideAnimationsAsync(). Used standalone API per Rule #9.
+- Task 7: Configured environment.ts (production: true, apiUrl: https://production-api.com) and environment.development.ts (production: false, apiUrl: https://localhost:5001). Aligned with angular.json fileReplacements.
+- Task 8: Replaced default Angular template with app shell (header + glass panel). Updated app.component.ts to import GlassPanelComponent and set title to "Event Hub". Added shell SCSS styles. Updated spec tests.
+- Task 9: ng lint passes with 0 errors. ng build succeeds (214 kB initial). 9/9 unit tests pass. @angular/animations installed as additional required dependency.
+
+### Change Log
+
+- 2026-02-23: Story 1.6 implementation complete — Angular SPA Foundation & Glass Theme
+
 ### File List
+
+**New files:**
+- src/frontend/src/styles/_variables.scss
+- src/frontend/src/styles/_glass.scss
+- src/frontend/src/styles/_typography.scss
+- src/frontend/src/styles/_material-overrides.scss
+- src/frontend/src/app/shared/components/glass-panel/glass-panel.component.ts
+- src/frontend/src/app/shared/components/glass-panel/glass-panel.component.scss
+- src/frontend/src/app/shared/components/glass-panel/glass-panel.component.spec.ts
+- src/frontend/src/app/store/index.ts
+- src/frontend/src/app/store/events/events.reducer.ts
+- src/frontend/src/app/store/submission/submission.reducer.ts
+- src/frontend/src/app/store/signalr/signalr.reducer.ts
+
+**Modified files:**
+- src/frontend/angular.json
+- src/frontend/package.json
+- src/frontend/package-lock.json
+- src/frontend/src/index.html
+- src/frontend/src/styles.scss
+- src/frontend/src/app/app.component.ts
+- src/frontend/src/app/app.component.html
+- src/frontend/src/app/app.component.scss
+- src/frontend/src/app/app.component.spec.ts
+- src/frontend/src/app/app.config.ts
+- src/frontend/src/environments/environment.ts
+- src/frontend/src/environments/environment.development.ts
+- _bmad-output/implementation-artifacts/sprint-status.yaml
+- _bmad-output/implementation-artifacts/1-6-angular-spa-foundation-and-glass-theme.md

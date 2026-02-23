@@ -1,0 +1,42 @@
+:root {
+  // Backgrounds
+  --bg-base: #060714;
+  --bg-surface: #111111;
+  --bg-elevated: #1a1a1a;
+  // Borders
+  --border: #1f1f1f;
+  --border-focus: #7c3aed;
+  // Text
+  --text-primary: #ededed;
+  --text-secondary: #a1a1a1;
+  --text-disabled: #4a4a4a;
+  // Semantic
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  // Event Type Chips
+  --chip-pageview-bg: #1e3a5f;
+  --chip-pageview-text: #60a5fa;
+  --chip-pageview-border: #3b82f6;
+  --chip-click-bg: #451a03;
+  --chip-click-text: #fbbf24;
+  --chip-click-border: #f59e0b;
+  --chip-purchase-bg: #052e16;
+  --chip-purchase-text: #4ade80;
+  --chip-purchase-border: #22c55e;
+  // Typography scale
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --mono-sm: 12px;
+  --mono-base: 13px;
+  // Glass
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 24px;
+  --glass-radius: 16px;
+}
