@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+.section-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--mono-sm);
+}
+
+.truncated-id {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+// mat-table Glass overrides
+table.mat-mdc-table {
+  background: transparent;
+  width: 100%;
+}
+
+.mat-mdc-header-cell {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  border-bottom-color: var(--border);
+}
+
+.mat-mdc-cell {
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  padding: 12px 16px;
+  border-bottom-color: var(--border);
+}
+
+.mat-mdc-row {
+  transition: background 150ms ease-out;
+
+  &:hover {
+    background: var(--bg-elevated);
+  }
+}
+
+// mat-paginator Glass overrides
+::ng-deep .mat-mdc-paginator {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+// mat-sort-header Glass overrides
+::ng-deep .mat-sort-header-arrow {
+  color: var(--text-secondary);
+}

@@ -34,3 +34,8 @@
   width: 380px;
   flex-shrink: 0;
 }
+
+.table-panel {
+  flex: 1;
+  min-width: 0;
+}

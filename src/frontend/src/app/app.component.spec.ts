@@ -3,6 +3,13 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { selectIsSubmitting, selectSubmissionStatus } from './store/submission/submission.selectors';
+import {
+  selectEvents,
+  selectEventsTotalCount,
+  selectEventsLoading,
+  selectEventsPagination,
+  selectEventsSort,
+} from './store/events/events.selectors';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -16,6 +23,11 @@ describe('AppComponent', () => {
           selectors: [
             { selector: selectIsSubmitting, value: false },
             { selector: selectSubmissionStatus, value: 'idle' },
+            { selector: selectEvents, value: [] },
+            { selector: selectEventsTotalCount, value: 0 },
+            { selector: selectEventsLoading, value: false },
+            { selector: selectEventsPagination, value: { page: 1, pageSize: 20 } },
+            { selector: selectEventsSort, value: { sortBy: 'createdAt', sortDir: 'desc' } },
           ],
         }),
       ],

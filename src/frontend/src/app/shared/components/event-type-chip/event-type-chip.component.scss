@@ -1,0 +1,28 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.chip-pageview {
+  background: var(--chip-pageview-bg);
+  color: var(--chip-pageview-text);
+  border-color: var(--chip-pageview-border);
+}
+
+.chip-click {
+  background: var(--chip-click-bg);
+  color: var(--chip-click-text);
+  border-color: var(--chip-click-border);
+}
+
+.chip-purchase {
+  background: var(--chip-purchase-bg);
+  color: var(--chip-purchase-text);
+  border-color: var(--chip-purchase-border);
+}
