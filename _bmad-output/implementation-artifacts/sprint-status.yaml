@@ -62,7 +62,7 @@ development_status:
   # Epic 3: Event Discovery & Table Display (Full Stack)
   epic-3: in-progress
   3-1-api-get-endpoint-with-server-side-filtering-sorting-and-pagination: review
-  3-2-ngrx-events-store-and-data-fetching: backlog
+  3-2-ngrx-events-store-and-data-fetching: review
   3-3-events-table-component: backlog
   3-4-event-type-chip-component: backlog
   3-5-events-filter-bar-and-reactive-filtering: backlog
