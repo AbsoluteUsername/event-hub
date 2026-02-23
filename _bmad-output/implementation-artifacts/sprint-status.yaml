@@ -64,7 +64,7 @@ development_status:
   3-1-api-get-endpoint-with-server-side-filtering-sorting-and-pagination: review
   3-2-ngrx-events-store-and-data-fetching: review
   3-3-events-table-component: review
-  3-4-event-type-chip-component: backlog
+  3-4-event-type-chip-component: review
   3-5-events-filter-bar-and-reactive-filtering: backlog
   3-6-loading-and-empty-states: backlog
   epic-3-retrospective: optional

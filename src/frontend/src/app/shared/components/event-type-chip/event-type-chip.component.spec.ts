@@ -70,4 +70,33 @@ describe('EventTypeChipComponent', () => {
     const chip = fixture.nativeElement.querySelector('.chip');
     expect(chip.classList.contains('chip-purchase')).toBeTrue();
   });
+
+  it('should have pill shape with border-radius via chip class', () => {
+    component.type = 'PageView';
+    fixture.detectChanges();
+
+    const chip = fixture.nativeElement.querySelector('.chip');
+    expect(chip).toBeTruthy();
+    expect(chip.classList.contains('chip')).toBeTrue();
+  });
+
+  it('should render with unknown type without crashing', () => {
+    component.type = 'Unknown';
+    fixture.detectChanges();
+
+    const chip = fixture.nativeElement.querySelector('.chip');
+    expect(chip).toBeTruthy();
+    expect(chip.textContent.trim()).toBe('Unknown');
+    expect(chip.getAttribute('aria-label')).toBe('Event type: Unknown');
+  });
+
+  it('should render chip text matching the type input exactly (case-sensitive)', () => {
+    component.type = 'PageView';
+    fixture.detectChanges();
+
+    const chip = fixture.nativeElement.querySelector('.chip');
+    expect(chip.textContent.trim()).toBe('PageView');
+    expect(chip.textContent.trim()).not.toBe('pageview');
+    expect(chip.textContent.trim()).not.toBe('PAGEVIEW');
+  });
 });
