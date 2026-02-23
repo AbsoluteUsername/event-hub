@@ -7,6 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { eventsReducer } from './store/events/events.reducer';
 import { submissionReducer } from './store/submission/submission.reducer';
 import { signalrReducer } from './store/signalr/signalr.reducer';
+import { SubmissionEffects } from './store/submission/submission.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +17,7 @@ export const appConfig: ApplicationConfig = {
       submission: submissionReducer,
       signalr: signalrReducer,
     }),
-    provideEffects([]),
+    provideEffects(SubmissionEffects),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),
     provideHttpClient(withInterceptors([])),
     provideAnimationsAsync(),

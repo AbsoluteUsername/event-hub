@@ -54,7 +54,7 @@ development_status:
   epic-2: in-progress
   2-1-api-post-endpoint-and-server-side-validation: review
   2-2-azure-function-event-processing-and-db-persistence: review
-  2-3-ngrx-submission-store-and-event-service: backlog
+  2-3-ngrx-submission-store-and-event-service: review
   2-4-event-creation-form-component: backlog
   2-5-form-submission-feedback-toast-notifications: backlog
   epic-2-retrospective: optional
