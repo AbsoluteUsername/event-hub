@@ -1,0 +1,12 @@
+@mixin glass-panel($padding: 24px) {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  padding: $padding;
+}
+
+@mixin glass-panel-compact {
+  @include glass-panel(12px);
+}

@@ -1,0 +1,9 @@
+@use '../../../../styles/glass' as glass;
+
+.glass-panel {
+  @include glass.glass-panel();
+}
+
+.glass-panel-compact {
+  @include glass.glass-panel-compact();
+}

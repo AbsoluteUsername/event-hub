@@ -47,11 +47,11 @@ development_status:
   1-3-infrastructure-layer-and-database-setup: review
   1-4-api-scaffold-and-configuration: review
   1-5-azure-function-scaffold: review
-  1-6-angular-spa-foundation-and-glass-theme: backlog
+  1-6-angular-spa-foundation-and-glass-theme: review
   epic-1-retrospective: optional
 
   # Epic 2: Event Submission Pipeline (Full Stack)
-  epic-2: backlog
+  epic-2: in-progress
   2-1-api-post-endpoint-and-server-side-validation: backlog
   2-2-azure-function-event-processing-and-db-persistence: backlog
   2-3-ngrx-submission-store-and-event-service: backlog
