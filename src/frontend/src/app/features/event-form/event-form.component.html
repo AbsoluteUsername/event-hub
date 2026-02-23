@@ -1,0 +1,58 @@
+<app-glass-panel>
+  <form [formGroup]="eventForm"
+        (ngSubmit)="onSubmit()"
+        role="form"
+        aria-label="Create Event">
+    <h2 class="form-title">Create Event</h2>
+
+    <mat-form-field appearance="outline">
+      <mat-label>User ID</mat-label>
+      <input matInput formControlName="userId"
+             placeholder="Enter your user ID"
+             aria-required="true"
+             #userIdInput>
+      @if (eventForm.get('userId')?.hasError('required')) {
+        <mat-error>Required</mat-error>
+      } @else if (eventForm.get('userId')?.hasError('maxlength')) {
+        <mat-error>Must be 100 characters or fewer</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Event Type</mat-label>
+      <mat-select formControlName="type"
+                  placeholder="Select event type"
+                  aria-required="true">
+        @for (t of eventTypes; track t) {
+          <mat-option [value]="t">{{ t }}</mat-option>
+        }
+      </mat-select>
+      @if (eventForm.get('type')?.hasError('required')) {
+        <mat-error>Required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description"
+             placeholder="Describe the event"
+             aria-required="true"
+             (keydown.enter)="onSubmit()">
+      @if (eventForm.get('description')?.hasError('required')) {
+        <mat-error>Required</mat-error>
+      } @else if (eventForm.get('description')?.hasError('maxlength')) {
+        <mat-error>Must be 500 characters or fewer</mat-error>
+      }
+      <mat-hint align="end">{{ eventForm.get('description')?.value?.length || 0 }} / 500</mat-hint>
+    </mat-form-field>
+
+    <button mat-raised-button
+            type="submit"
+            class="submit-button"
+            [disabled]="isSubmitting$ | async"
+            [attr.aria-busy]="(isSubmitting$ | async) ? 'true' : null"
+            aria-label="Submit event">
+      Submit Event
+    </button>
+  </form>
+</app-glass-panel>

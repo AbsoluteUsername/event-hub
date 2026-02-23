@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
+import { selectIsSubmitting, selectSubmissionStatus } from './store/submission/submission.selectors';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -7,7 +10,15 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, NoopAnimationsModule],
+      providers: [
+        provideMockStore({
+          selectors: [
+            { selector: selectIsSubmitting, value: false },
+            { selector: selectSubmissionStatus, value: 'idle' },
+          ],
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
@@ -28,10 +39,10 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('.app-title')?.textContent).toContain('Event Hub');
   });
 
-  it('should render the glass panel component', () => {
+  it('should render the event form component', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('app-glass-panel')).toBeTruthy();
+    expect(compiled.querySelector('app-event-form')).toBeTruthy();
   });
 
   it('should render the SignalR placeholder', () => {

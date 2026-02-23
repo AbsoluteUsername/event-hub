@@ -15,3 +15,7 @@ export const submitEventFailure = createAction(
   '[Events API] Submit Event Failure',
   props<{ error: string }>()
 );
+
+export const resetSubmissionStatus = createAction(
+  '[Event Form] Reset Submission Status'
+);

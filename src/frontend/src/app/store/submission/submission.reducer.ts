@@ -27,5 +27,10 @@ export const submissionReducer = createReducer(
     ...state,
     status: 'failure' as const,
     error,
+  })),
+  on(SubmissionActions.resetSubmissionStatus, (state) => ({
+    ...state,
+    status: 'idle' as const,
+    error: null,
   }))
 );
