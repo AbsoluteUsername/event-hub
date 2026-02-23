@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.form-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 24px 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.submit-button {
+  height: 48px;
+  background: linear-gradient(135deg, var(--accent), #5b21b6) !important;
+  color: white !important;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: var(--text-base);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+  transition: box-shadow 0.2s ease, opacity 0.2s ease;
+  border: none;
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { GlassPanelComponent } from './shared/components/glass-panel/glass-panel.component';
+import { EventFormComponent } from './features/event-form/event-form.component';
 
 @Component({
   selector: 'app-root',
-  imports: [GlassPanelComponent],
+  imports: [EventFormComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
