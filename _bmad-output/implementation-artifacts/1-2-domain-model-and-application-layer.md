@@ -52,9 +52,9 @@ so that all layers have a shared vocabulary and dependency contracts to build ag
 - [x] Task 4: Implement EventHub.Application Messages (AC: #2)
   - [x] 4.1: Create `Messages/EventMessage.cs` with all event fields for Service Bus contract
 
-- [ ] Task 5: Implement EventHub.Application Interfaces (AC: #2)
-  - [ ] 5.1: Create `Interfaces/IEventRepository.cs` with `Task<PagedResult<Event>> GetAllAsync(EventFilter filter)` and `Task<Event> CreateAsync(Event entity)`
-  - [ ] 5.2: Create `Interfaces/IServiceBusPublisher.cs` with `Task PublishAsync(EventMessage message)`
+- [x] Task 5: Implement EventHub.Application Interfaces (AC: #2)
+  - [x] 5.1: Create `Interfaces/IEventRepository.cs` with `Task<PagedResult<Event>> GetAllAsync(EventFilter filter)` and `Task<Event> CreateAsync(Event entity)`
+  - [x] 5.2: Create `Interfaces/IServiceBusPublisher.cs` with `Task PublishAsync(EventMessage message)`
 
 - [ ] Task 6: Verify build and dependencies (AC: #3, #4, #5)
   - [ ] 6.1: Verify `EventHub.Domain.csproj` has zero `<PackageReference>` entries
