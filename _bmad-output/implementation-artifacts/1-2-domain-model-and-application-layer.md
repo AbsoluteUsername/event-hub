@@ -1,6 +1,6 @@
 # Story 1.2: Domain Model & Application Layer
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -56,10 +56,10 @@ so that all layers have a shared vocabulary and dependency contracts to build ag
   - [x] 5.1: Create `Interfaces/IEventRepository.cs` with `Task<PagedResult<Event>> GetAllAsync(EventFilter filter)` and `Task<Event> CreateAsync(Event entity)`
   - [x] 5.2: Create `Interfaces/IServiceBusPublisher.cs` with `Task PublishAsync(EventMessage message)`
 
-- [ ] Task 6: Verify build and dependencies (AC: #3, #4, #5)
-  - [ ] 6.1: Verify `EventHub.Domain.csproj` has zero `<PackageReference>` entries
-  - [ ] 6.2: Verify `EventHub.Application.csproj` references only `EventHub.Domain` (one `<ProjectReference>`)
-  - [ ] 6.3: Run `dotnet build` from solution root — zero errors, zero warnings
+- [x] Task 6: Verify build and dependencies (AC: #3, #4, #5)
+  - [x] 6.1: Verify `EventHub.Domain.csproj` has zero `<PackageReference>` entries
+  - [x] 6.2: Verify `EventHub.Application.csproj` references only `EventHub.Domain` (one `<ProjectReference>`)
+  - [x] 6.3: Run `dotnet build` from solution root — zero errors, zero warnings
 
 ## Dev Notes
 
@@ -278,10 +278,39 @@ public interface IServiceBusPublisher
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Opus 4.6 (claude-opus-4-6)
 
 ### Debug Log References
 
+No issues encountered during implementation.
+
 ### Completion Notes List
 
+- Task 1: Deleted template placeholder Class1.cs files from Domain, Application, and Infrastructure projects
+- Task 2: Created EventType enum (PageView, Click, Purchase) and Event entity (Id, UserId, Type, Description, CreatedAt) in Domain layer
+- Task 3: Created Application DTOs — CreateEventRequest with DataAnnotations, EventResponse, EventFilter with sensible defaults, PagedResult<T>
+- Task 4: Created EventMessage for Service Bus contract with all event fields
+- Task 5: Created IEventRepository (GetAllAsync, CreateAsync) and IServiceBusPublisher (PublishAsync) interfaces
+- Task 6: Verified Domain has zero PackageReferences, Application references only Domain, full solution builds with 0 errors/0 warnings, all tests pass (2/2)
+
+### Change Log
+
+- 2026-02-23: Story 1.2 implementation complete — Domain model and Application layer contracts established
+
 ### File List
+
+**Deleted:**
+- src/EventHub.Domain/Class1.cs
+- src/EventHub.Application/Class1.cs
+- src/EventHub.Infrastructure/Class1.cs
+
+**Created:**
+- src/EventHub.Domain/Enums/EventType.cs
+- src/EventHub.Domain/Entities/Event.cs
+- src/EventHub.Application/DTOs/CreateEventRequest.cs
+- src/EventHub.Application/DTOs/EventResponse.cs
+- src/EventHub.Application/DTOs/EventFilter.cs
+- src/EventHub.Application/DTOs/PagedResult.cs
+- src/EventHub.Application/Messages/EventMessage.cs
+- src/EventHub.Application/Interfaces/IEventRepository.cs
+- src/EventHub.Application/Interfaces/IServiceBusPublisher.cs
