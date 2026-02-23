@@ -43,11 +43,11 @@ so that all layers have a shared vocabulary and dependency contracts to build ag
   - [x] 2.2: Create `Entities/Event.cs` — domain entity with: `Id` (Guid), `UserId` (string), `Type` (EventType), `Description` (string), `CreatedAt` (DateTime)
   - [x] 2.3: Verify Domain project has zero external NuGet dependencies in `.csproj`
 
-- [ ] Task 3: Implement EventHub.Application DTOs (AC: #2, #4)
-  - [ ] 3.1: Create `DTOs/CreateEventRequest.cs` with DataAnnotations validation attributes
-  - [ ] 3.2: Create `DTOs/EventResponse.cs` matching the API response contract
-  - [ ] 3.3: Create `DTOs/EventFilter.cs` with all query parameters (Type, UserId, Description, From, To, Page, PageSize, SortBy, SortDir) and sensible defaults (Page=1, PageSize=20, SortBy="createdAt", SortDir="desc")
-  - [ ] 3.4: Create `DTOs/PagedResult.cs` as generic class: `PagedResult<T>` with `Items`, `TotalCount`, `Page`, `PageSize`
+- [x] Task 3: Implement EventHub.Application DTOs (AC: #2, #4)
+  - [x] 3.1: Create `DTOs/CreateEventRequest.cs` with DataAnnotations validation attributes
+  - [x] 3.2: Create `DTOs/EventResponse.cs` matching the API response contract
+  - [x] 3.3: Create `DTOs/EventFilter.cs` with all query parameters (Type, UserId, Description, From, To, Page, PageSize, SortBy, SortDir) and sensible defaults (Page=1, PageSize=20, SortBy="createdAt", SortDir="desc")
+  - [x] 3.4: Create `DTOs/PagedResult.cs` as generic class: `PagedResult<T>` with `Items`, `TotalCount`, `Page`, `PageSize`
 
 - [ ] Task 4: Implement EventHub.Application Messages (AC: #2)
   - [ ] 4.1: Create `Messages/EventMessage.cs` with all event fields for Service Bus contract
