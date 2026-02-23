@@ -194,6 +194,13 @@ public class EventProcessingServiceTests
             Times.Once);
     }
 
+    [Fact]
+    public async Task ProcessAsync_NullMessage_ThrowsNullReferenceException()
+    {
+        // Arrange & Act & Assert — null message causes NullReferenceException on property access
+        await Assert.ThrowsAsync<NullReferenceException>(() => _sut.ProcessAsync(null!));
+    }
+
     /// <summary>
     /// Creates a mock SqlException with the specified error number.
     /// SqlException has no public constructor, so we use reflection.
