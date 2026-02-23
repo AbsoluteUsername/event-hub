@@ -11,11 +11,13 @@ public class EventsController : ControllerBase
 {
     private readonly IServiceBusPublisher _serviceBusPublisher;
     private readonly ILogger<EventsController> _logger;
+    private readonly IEventRepository _eventRepository;
 
-    public EventsController(IServiceBusPublisher serviceBusPublisher, ILogger<EventsController> logger)
+    public EventsController(IServiceBusPublisher serviceBusPublisher, ILogger<EventsController> logger, IEventRepository eventRepository)
     {
         _serviceBusPublisher = serviceBusPublisher;
         _logger = logger;
+        _eventRepository = eventRepository;
     }
 
     [HttpPost]
@@ -51,10 +53,31 @@ public class EventsController : ControllerBase
         return CreatedAtAction(null, new { id = response.Id }, response);
     }
 
+    /// <summary>
+    /// Retrieves events with optional filtering, sorting, and pagination.
+    /// Query parameters: type, userId, description, from, to, page, pageSize, sortBy, sortDir.
+    /// </summary>
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [ProducesResponseType(typeof(PagedResult<EventResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<PagedResult<EventResponse>>> GetAll([FromQuery] EventFilter filter)
     {
-        await Task.CompletedTask;
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        var result = await _eventRepository.GetAllAsync(filter);
+
+        var response = new PagedResult<EventResponse>
+        {
+            Items = result.Items.Select(e => new EventResponse
+            {
+                Id = e.Id,
+                UserId = e.UserId,
+                Type = e.Type,
+                Description = e.Description,
+                CreatedAt = e.CreatedAt
+            }).ToList(),
+            TotalCount = result.TotalCount,
+            Page = result.Page,
+            PageSize = result.PageSize
+        };
+
+        return Ok(response);
     }
 }

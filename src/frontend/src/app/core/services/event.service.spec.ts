@@ -3,6 +3,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { EventService } from './event.service';
 import { CreateEventRequest, EventResponse, EventType } from '../../shared/models/event.model';
+import { EventFilter } from '../../shared/models/event-filter.model';
+import { PagedResult } from '../../shared/models/paged-result.model';
 import { environment } from '../../../environments/environment';
 
 describe('EventService', () => {
@@ -64,5 +66,103 @@ describe('EventService', () => {
 
     const req = httpMock.expectOne(`${environment.apiUrl}/api/events`);
     req.flush(mockResponse);
+  });
+
+  describe('getAll', () => {
+    const mockPagedResult: PagedResult<EventResponse> = {
+      items: [mockResponse],
+      totalCount: 1,
+      page: 1,
+      pageSize: 20,
+    };
+
+    it('should send GET request to /api/events with query params', () => {
+      const filter: EventFilter = {
+        page: 1,
+        pageSize: 20,
+        sortBy: 'createdAt',
+        sortDir: 'desc',
+        type: EventType.Click,
+        userId: 'olena',
+      };
+
+      service.getAll(filter).subscribe((response) => {
+        expect(response).toEqual(mockPagedResult);
+      });
+
+      const req = httpMock.expectOne(
+        (r) =>
+          r.url === `${environment.apiUrl}/api/events` &&
+          r.method === 'GET' &&
+          r.params.get('page') === '1' &&
+          r.params.get('pageSize') === '20' &&
+          r.params.get('sortBy') === 'createdAt' &&
+          r.params.get('sortDir') === 'desc' &&
+          r.params.get('type') === 'Click' &&
+          r.params.get('userId') === 'olena'
+      );
+      req.flush(mockPagedResult);
+    });
+
+    it('should omit null/undefined filter values from query params', () => {
+      const filter: EventFilter = {
+        page: 1,
+        pageSize: 20,
+        sortBy: 'createdAt',
+        sortDir: 'desc',
+      };
+
+      service.getAll(filter).subscribe();
+
+      const req = httpMock.expectOne(
+        (r) =>
+          r.url === `${environment.apiUrl}/api/events` &&
+          r.method === 'GET'
+      );
+      expect(req.request.params.get('page')).toBe('1');
+      expect(req.request.params.get('pageSize')).toBe('20');
+      expect(req.request.params.get('sortBy')).toBe('createdAt');
+      expect(req.request.params.get('sortDir')).toBe('desc');
+      expect(req.request.params.has('type')).toBe(false);
+      expect(req.request.params.has('userId')).toBe(false);
+      expect(req.request.params.has('description')).toBe(false);
+      expect(req.request.params.has('from')).toBe(false);
+      expect(req.request.params.has('to')).toBe(false);
+      req.flush(mockPagedResult);
+    });
+
+    it('should return Observable<PagedResult<EventResponse>> with correct shape', () => {
+      const filter: EventFilter = {
+        page: 2,
+        pageSize: 10,
+        sortBy: 'userId',
+        sortDir: 'asc',
+      };
+
+      const expectedResult: PagedResult<EventResponse> = {
+        items: [mockResponse],
+        totalCount: 15,
+        page: 2,
+        pageSize: 10,
+      };
+
+      service.getAll(filter).subscribe((response) => {
+        expect(response.items).toBeDefined();
+        expect(response.totalCount).toBe(15);
+        expect(response.page).toBe(2);
+        expect(response.pageSize).toBe(10);
+        expect(response.items.length).toBe(1);
+        expect(response.items[0].id).toBe(mockResponse.id);
+        expect(response.items[0].userId).toBe(mockResponse.userId);
+        expect(response.items[0].type).toBe(mockResponse.type);
+      });
+
+      const req = httpMock.expectOne(
+        (r) =>
+          r.url === `${environment.apiUrl}/api/events` &&
+          r.method === 'GET'
+      );
+      req.flush(expectedResult);
+    });
   });
 });

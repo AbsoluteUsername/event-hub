@@ -17,7 +17,7 @@ public class EventRepository : IEventRepository
 
     public async Task<PagedResult<Event>> GetAllAsync(EventFilter filter)
     {
-        var query = _dbContext.Events.AsQueryable();
+        var query = _dbContext.Events.AsNoTracking().AsQueryable();
 
         // Apply filters (AND logic — all conditions must match)
         if (filter.Type.HasValue)
@@ -67,7 +67,7 @@ public class EventRepository : IEventRepository
     {
         var isDescending = string.Equals(sortDir, "desc", StringComparison.OrdinalIgnoreCase);
 
-        return sortBy?.ToLowerInvariant() switch
+        var ordered = sortBy?.ToLowerInvariant() switch
         {
             "id" => isDescending ? query.OrderByDescending(e => e.Id) : query.OrderBy(e => e.Id),
             "userid" => isDescending ? query.OrderByDescending(e => e.UserId) : query.OrderBy(e => e.UserId),
@@ -75,5 +75,7 @@ public class EventRepository : IEventRepository
             "description" => isDescending ? query.OrderByDescending(e => e.Description) : query.OrderBy(e => e.Description),
             "createdat" or _ => isDescending ? query.OrderByDescending(e => e.CreatedAt) : query.OrderBy(e => e.CreatedAt),
         };
+
+        return ordered.ThenBy(e => e.Id);
     }
 }
