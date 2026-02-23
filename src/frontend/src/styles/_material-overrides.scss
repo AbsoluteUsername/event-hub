@@ -71,3 +71,22 @@ html {
 .toast-error .mdc-snackbar__surface {
   border-left: 3px solid var(--error);
 }
+
+// Datepicker overrides (Glass Theme)
+.mat-datepicker-content {
+  background-color: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
+
+  .mat-calendar-body-cell-content {
+    color: var(--text-primary);
+  }
+
+  .mat-calendar-body-selected {
+    background-color: var(--accent);
+    color: white;
+  }
+
+  .mat-calendar-body-in-range::before {
+    background-color: rgba(124, 58, 237, 0.15);
+  }
+}

@@ -65,7 +65,7 @@ development_status:
   3-2-ngrx-events-store-and-data-fetching: review
   3-3-events-table-component: review
   3-4-event-type-chip-component: review
-  3-5-events-filter-bar-and-reactive-filtering: backlog
+  3-5-events-filter-bar-and-reactive-filtering: review
   3-6-loading-and-empty-states: backlog
   epic-3-retrospective: optional
 
