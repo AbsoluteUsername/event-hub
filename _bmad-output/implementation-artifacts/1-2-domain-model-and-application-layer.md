@@ -49,8 +49,8 @@ so that all layers have a shared vocabulary and dependency contracts to build ag
   - [x] 3.3: Create `DTOs/EventFilter.cs` with all query parameters (Type, UserId, Description, From, To, Page, PageSize, SortBy, SortDir) and sensible defaults (Page=1, PageSize=20, SortBy="createdAt", SortDir="desc")
   - [x] 3.4: Create `DTOs/PagedResult.cs` as generic class: `PagedResult<T>` with `Items`, `TotalCount`, `Page`, `PageSize`
 
-- [ ] Task 4: Implement EventHub.Application Messages (AC: #2)
-  - [ ] 4.1: Create `Messages/EventMessage.cs` with all event fields for Service Bus contract
+- [x] Task 4: Implement EventHub.Application Messages (AC: #2)
+  - [x] 4.1: Create `Messages/EventMessage.cs` with all event fields for Service Bus contract
 
 - [ ] Task 5: Implement EventHub.Application Interfaces (AC: #2)
   - [ ] 5.1: Create `Interfaces/IEventRepository.cs` with `Task<PagedResult<Event>> GetAllAsync(EventFilter filter)` and `Task<Event> CreateAsync(Event entity)`
