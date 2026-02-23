@@ -30,10 +30,11 @@ public class ProcessEvent
     {
         _logger.LogInformation("Processing event message: {MessageBody}", messageBody);
 
-        var eventMessage = JsonSerializer.Deserialize<EventMessage>(messageBody, JsonOptions);
+        var eventMessage = JsonSerializer.Deserialize<EventMessage>(messageBody, JsonOptions)
+            ?? throw new InvalidOperationException("Failed to deserialize event message: deserialization returned null");
 
-        await _processingService.ProcessAsync(eventMessage!);
+        await _processingService.ProcessAsync(eventMessage);
 
-        _logger.LogInformation("Event message processed successfully");
+        _logger.LogInformation("Event {EventId} processed successfully", eventMessage.Id);
     }
 }

@@ -123,4 +123,24 @@ public class ProcessEventTests
             m.Type == EventType.PageView &&
             m.Description == "Page view event")), Times.Once);
     }
+
+    [Fact]
+    public async Task Run_MalformedJson_ThrowsJsonException()
+    {
+        // Arrange — malformed JSON should propagate exception (triggers dead-letter)
+        var malformedJson = "{ this is not valid json }";
+
+        // Act & Assert — exception propagates to Service Bus runtime for retry/dead-letter
+        await Assert.ThrowsAsync<JsonException>(() => _sut.Run(malformedJson));
+    }
+
+    [Fact]
+    public async Task Run_NullDeserialization_ThrowsInvalidOperationException()
+    {
+        // Arrange — "null" JSON literal deserializes to null
+        var messageBody = "null";
+
+        // Act & Assert — explicit null check throws InvalidOperationException
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _sut.Run(messageBody));
+    }
 }
