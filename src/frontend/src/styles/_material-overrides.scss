@@ -47,4 +47,27 @@ html {
 .mat-mdc-snack-bar-container {
   --mdc-snackbar-container-color: var(--bg-elevated);
   --mdc-snackbar-supporting-text-color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 16px !important;
+}
+
+// Toast notification styles (Glass Theme)
+.toast-success,
+.toast-error {
+  --mdc-snackbar-container-color: rgba(17, 17, 17, 0.95);
+  --mdc-snackbar-supporting-text-color: var(--text-primary);
+
+  & .mdc-snackbar__surface {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    max-width: 360px;
+  }
+}
+
+.toast-success .mdc-snackbar__surface {
+  border-left: 3px solid var(--success);
+}
+
+.toast-error .mdc-snackbar__surface {
+  border-left: 3px solid var(--error);
 }

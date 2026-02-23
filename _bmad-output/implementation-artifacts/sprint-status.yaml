@@ -56,7 +56,7 @@ development_status:
   2-2-azure-function-event-processing-and-db-persistence: review
   2-3-ngrx-submission-store-and-event-service: review
   2-4-event-creation-form-component: review
-  2-5-form-submission-feedback-toast-notifications: backlog
+  2-5-form-submission-feedback-toast-notifications: review
   epic-2-retrospective: optional
 
   # Epic 3: Event Discovery & Table Display (Full Stack)
