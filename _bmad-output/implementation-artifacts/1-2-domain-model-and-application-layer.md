@@ -38,10 +38,10 @@ so that all layers have a shared vocabulary and dependency contracts to build ag
   - [x] 1.2: Delete `src/EventHub.Application/Class1.cs` (template placeholder)
   - [x] 1.3: Delete `src/EventHub.Infrastructure/Class1.cs` (template placeholder — preemptive cleanup for Story 1.3)
 
-- [ ] Task 2: Implement EventHub.Domain layer (AC: #1, #3)
-  - [ ] 2.1: Create `Enums/EventType.cs` — enum with values `PageView`, `Click`, `Purchase`
-  - [ ] 2.2: Create `Entities/Event.cs` — domain entity with: `Id` (Guid), `UserId` (string), `Type` (EventType), `Description` (string), `CreatedAt` (DateTime)
-  - [ ] 2.3: Verify Domain project has zero external NuGet dependencies in `.csproj`
+- [x] Task 2: Implement EventHub.Domain layer (AC: #1, #3)
+  - [x] 2.1: Create `Enums/EventType.cs` — enum with values `PageView`, `Click`, `Purchase`
+  - [x] 2.2: Create `Entities/Event.cs` — domain entity with: `Id` (Guid), `UserId` (string), `Type` (EventType), `Description` (string), `CreatedAt` (DateTime)
+  - [x] 2.3: Verify Domain project has zero external NuGet dependencies in `.csproj`
 
 - [ ] Task 3: Implement EventHub.Application DTOs (AC: #2, #4)
   - [ ] 3.1: Create `DTOs/CreateEventRequest.cs` with DataAnnotations validation attributes
