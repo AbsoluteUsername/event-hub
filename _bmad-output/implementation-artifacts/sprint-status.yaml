@@ -42,8 +42,8 @@ story_location: _bmad-output/implementation-artifacts
 development_status:
   # Epic 1: Project Initialization & Core Infrastructure
   epic-1: in-progress
-  1-1-solution-scaffold-and-project-initialization: review
-  1-2-domain-model-and-application-layer: backlog
+  1-1-solution-scaffold-and-project-initialization: done
+  1-2-domain-model-and-application-layer: in-progress
   1-3-infrastructure-layer-and-database-setup: backlog
   1-4-api-scaffold-and-configuration: backlog
   1-5-azure-function-scaffold: backlog
