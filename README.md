@@ -16,6 +16,7 @@
 ## Overview
 
 Event Hub is a real-time event tracking application built with a modern cloud-native stack. It enables users to submit events through a form, processes them asynchronously via Azure Service Bus, persists them to Azure SQL, and broadcasts live updates to all connected clients using Azure SignalR Service.
+![demo](https://github.com/user-attachments/assets/7a9b1b48-049e-438f-9e07-d017757602d4)
 
 **Key components:**
 
@@ -36,12 +37,12 @@ Event Hub is a real-time event tracking application built with a modern cloud-na
 
 ```mermaid
 graph TD
-    A[Angular SPA<br/>Angular 19 + NgRx] -->|POST /api/events| B[ASP.NET Core 8 API]
-    A -->|POST /api/negotiate| B
-    A -->|WebSocket| F[Azure SignalR Service<br/>Serverless]
-    B -->|Publish EventMessage| C[Azure Service Bus Queue]
-    B -->|GET /api/events| D[Azure SQL<br/>EF Core 8]
-    C -->|ServiceBusTrigger| E[Azure Function<br/>.NET 8 Isolated]
+    A["Angular SPA<br>Angular 19 + NgRx"] -->|"POST /api/events"| B["ASP.NET Core 8 API"]
+    A -->|"POST /api/negotiate"| B
+    A -->|WebSocket| F["Azure SignalR Service<br>Serverless"]
+    B -->|"Publish EventMessage"| C["Azure Service Bus Queue"]
+    B -->|"GET /api/events"| D["Azure SQL<br>EF Core 8"]
+    C -->|ServiceBusTrigger| E["Azure Function<br>.NET 8 Isolated"]
     E -->|CreateAsync| D
     E -->|SignalRMessageAction| F
 ```
