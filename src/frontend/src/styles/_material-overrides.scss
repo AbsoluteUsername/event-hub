@@ -53,7 +53,8 @@ html {
 
 // Toast notification styles (Glass Theme)
 .toast-success,
-.toast-error {
+.toast-error,
+.toast-info {
   --mdc-snackbar-container-color: rgba(17, 17, 17, 0.95);
   --mdc-snackbar-supporting-text-color: var(--text-primary);
 
@@ -70,6 +71,10 @@ html {
 
 .toast-error .mdc-snackbar__surface {
   border-left: 3px solid var(--error);
+}
+
+.toast-info .mdc-snackbar__surface {
+  border-left: 3px solid var(--accent);
 }
 
 // Datepicker overrides (Glass Theme)

@@ -23,4 +23,18 @@ export class NotificationService {
       panelClass: ['toast-error'],
     });
   }
+
+  showInfo(message: string, actionLabel?: string, onAction?: () => void): void {
+    const ref = this.snackBar.open(message, actionLabel ?? '', {
+      duration: 6000,
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
+      panelClass: ['toast-info'],
+      politeness: 'polite',
+    });
+
+    if (onAction && actionLabel) {
+      ref.onAction().subscribe(() => onAction());
+    }
+  }
 }
