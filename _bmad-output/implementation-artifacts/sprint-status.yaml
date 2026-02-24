@@ -83,6 +83,6 @@ development_status:
   5-1-responsive-layout-3-breakpoints: review
   5-2-keyboard-navigation-and-focus-management: review
   5-3-swagger-openapi-documentation: review
-  5-4-readme-and-architecture-documentation: review
+  5-4-readme-and-architecture-documentation: done
   5-5-code-quality-and-linting-configuration: backlog
   epic-5-retrospective: optional

@@ -1,18 +1,5 @@
 # Event Hub
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [End-to-End Data Flow](#end-to-end-data-flow)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [API Documentation](#api-documentation)
-- [Architectural Decision Records](#architectural-decision-records-adrs)
-- [BMAD Planning Artifacts](#bmad-planning-artifacts)
-
----
-
 ## Overview
 
 Event Hub is a real-time event tracking application built with a modern cloud-native stack. It enables users to submit events through a form, processes them asynchronously via Azure Service Bus, persists them to Azure SQL, and broadcasts live updates to all connected clients using Azure SignalR Service.
@@ -29,6 +16,17 @@ Event Hub is a real-time event tracking application built with a modern cloud-na
 | Message Broker | Azure Service Bus Queue |
 | Real-Time Service | Azure SignalR Service (Serverless) |
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [End-to-End Data Flow](#end-to-end-data-flow)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [API Documentation](#api-documentation)
+- [Architectural Decision Records](#architectural-decision-records-adrs)
+- [BMAD Planning Artifacts](#bmad-planning-artifacts)
+
 ---
 
 ## Architecture
@@ -38,10 +36,11 @@ Event Hub is a real-time event tracking application built with a modern cloud-na
 ```mermaid
 graph TD
     A["Angular SPA<br>Angular 19 + NgRx"] -->|"POST /api/events"| B["ASP.NET Core 8 API"]
+    A -->|"GET /api/events"| B
     A -->|"POST /api/negotiate"| B
     A -->|WebSocket| F["Azure SignalR Service<br>Serverless"]
     B -->|"Publish EventMessage"| C["Azure Service Bus Queue"]
-    B -->|"GET /api/events"| D["Azure SQL<br>EF Core 8"]
+    B -->|"EF Core QueryAsync"| D["Azure SQL<br>EF Core 8"]
     C -->|ServiceBusTrigger| E["Azure Function<br>.NET 8 Isolated"]
     E -->|CreateAsync| D
     E -->|SignalRMessageAction| F
@@ -115,6 +114,20 @@ event-hub/
 └── docs/
 ```
 
+The .NET backend follows **Clean Architecture** with a strict dependency rule — inner layers never reference outer layers:
+
+```
+EventHub.Domain          ← Entities, Enums (zero dependencies)
+  ↑
+EventHub.Application     ← DTOs, Interfaces, Messages
+  ↑
+EventHub.Infrastructure  ← EF Core, Repositories, Service Bus
+  ↑                ↑
+EventHub.Api       EventHub.Function
+```
+
+Both `EventHub.Api` and `EventHub.Function` reference `Application` + `Infrastructure` but never each other. This keeps the event processing pipeline fully decoupled from the HTTP layer.
+
 ---
 
 ## Getting Started
@@ -127,9 +140,32 @@ Ensure the following tools are installed before proceeding:
 |------|---------|---------|
 | Node.js | 22.x LTS | [nodejs.org](https://nodejs.org) |
 | .NET SDK | 8.0 LTS | [dot.net](https://dot.net/download) |
+| Angular CLI | Latest | `npm install -g @angular/cli` |
 | Azure CLI | Latest | `winget install Microsoft.AzureCLI` |
 | Azure Functions Core Tools | v4 | `npm install -g azure-functions-core-tools@4` |
+| dotnet-ef | Latest | `dotnet tool install --global dotnet-ef` |
 | Git | Latest | [git-scm.com](https://git-scm.com) |
+
+### Clone and Install Dependencies
+
+```bash
+git clone <repository-url>
+cd event-hub
+
+# Restore NuGet packages
+dotnet restore
+
+# Install Angular dependencies
+cd src/frontend && npm install && cd ../..
+```
+
+### Trust the HTTPS Development Certificate
+
+Required for the browser to accept the API running on `https://localhost:5001`:
+
+```bash
+dotnet dev-certs https --trust
+```
 
 ### Azure Resource Provisioning
 

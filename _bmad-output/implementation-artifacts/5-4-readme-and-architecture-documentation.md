@@ -1,6 +1,6 @@
 # Story 5.4: README & Architecture Documentation
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -383,3 +383,4 @@ No debug issues encountered. Documentation-only story with no code changes.
 |------|--------|
 | 2026-02-24 | Story 5.4 created — README & Architecture Documentation (ready-for-dev) |
 | 2026-02-24 | Story 5.4 implemented — README.md created at repo root; all 6 tasks complete; status → review |
+| 2026-02-25 | Code review complete — fixed: architecture diagram (missing GET /api/events arrow, mislabeled API→SQL edge), Getting Started (added git clone, dotnet restore, npm install, dev-certs, Angular CLI and dotnet-ef prerequisites), TOC placement (moved after Overview per task 2.0); status → done |
