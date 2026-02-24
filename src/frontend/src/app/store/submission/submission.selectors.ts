@@ -17,3 +17,18 @@ export const selectIsSubmitting = createSelector(
   selectSubmissionState,
   (state) => state.status === 'submitting'
 );
+
+export const selectSubmissionChipState = createSelector(
+  selectSubmissionStatus,
+  (status) => status
+);
+
+export const selectIsSubmitDisabled = createSelector(
+  selectSubmissionState,
+  (state) =>
+    state.status === 'submitting' ||
+    state.status === 'success' ||
+    state.status === 'chip-flying' ||
+    state.status === 'waiting-signalr' ||
+    state.status === 'landing'
+);

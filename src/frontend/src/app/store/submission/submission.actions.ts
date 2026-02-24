@@ -19,3 +19,11 @@ export const submitEventFailure = createAction(
 export const resetSubmissionStatus = createAction(
   '[Event Form] Reset Submission Status'
 );
+
+export const chipFlying = createAction('[Submission] Chip Flying');
+
+export const chipWaitingSignalr = createAction('[Submission] Chip Waiting SignalR');
+
+export const chipLanding = createAction('[Submission] Chip Landing');
+
+export const chipLanded = createAction('[Submission] Chip Landed');

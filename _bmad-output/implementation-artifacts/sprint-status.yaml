@@ -74,7 +74,7 @@ development_status:
   4-1-azure-function-signalr-output-binding-and-negotiate-endpoint: review
   4-2-angular-signalr-service-and-ngrx-integration: review
   4-3-signalr-status-dot-component: review
-  4-4-flying-chip-animation: backlog
+  4-4-flying-chip-animation: review
   4-5-row-insert-animation-and-context-aware-feedback: backlog
   epic-4-retrospective: optional
 

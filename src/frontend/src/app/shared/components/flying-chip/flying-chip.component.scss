@@ -1,0 +1,44 @@
+:host {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(124, 58, 237, 0.3);
+  border: 1px solid rgba(124, 58, 237, 0.6);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: var(--text-sm, 13px);
+  color: var(--text-primary, #ededed);
+  white-space: nowrap;
+}
+
+.chip-type {
+  font-weight: 500;
+
+  &.type-pageview {
+    color: var(--chip-pageview-text);
+  }
+
+  &.type-click {
+    color: var(--chip-click-text);
+  }
+
+  &.type-purchase {
+    color: var(--chip-purchase-text);
+  }
+}
+
+.chip-separator {
+  color: var(--text-secondary, #a1a1a1);
+}
+
+.chip-user {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--mono-sm, 12px);
+  color: var(--text-secondary, #a1a1a1);
+}

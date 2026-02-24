@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Subject } from 'rxjs';
+import { Action } from '@ngrx/store';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { selectIsSubmitting, selectSubmissionStatus } from './store/submission/submission.selectors';
+import { selectIsSubmitting, selectSubmissionStatus, selectIsSubmitDisabled } from './store/submission/submission.selectors';
 import {
   selectEvents,
   selectEventsTotalCount,
@@ -11,18 +14,26 @@ import {
   selectEventsSort,
 } from './store/events/events.selectors';
 import { selectConnectionStatus } from './store/signalr/signalr.selectors';
+import { AnimationService } from './core/services/animation.service';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let app: AppComponent;
 
   beforeEach(async () => {
+    const actions$ = new Subject<Action>();
+    const animationService = jasmine.createSpyObj('AnimationService', ['shouldAnimate'], {
+      prefersReducedMotion: jasmine.createSpy().and.returnValue(false),
+    });
+    animationService.shouldAnimate.and.returnValue(false);
+
     await TestBed.configureTestingModule({
       imports: [AppComponent, NoopAnimationsModule],
       providers: [
         provideMockStore({
           selectors: [
             { selector: selectIsSubmitting, value: false },
+            { selector: selectIsSubmitDisabled, value: false },
             { selector: selectSubmissionStatus, value: 'idle' },
             { selector: selectEvents, value: [] },
             { selector: selectEventsTotalCount, value: 0 },
@@ -32,6 +43,8 @@ describe('AppComponent', () => {
             { selector: selectConnectionStatus, value: 'disconnected' },
           ],
         }),
+        provideMockActions(() => actions$),
+        { provide: AnimationService, useValue: animationService },
       ],
     }).compileComponents();
 

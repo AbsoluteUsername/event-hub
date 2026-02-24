@@ -49,8 +49,9 @@
     <button mat-raised-button
             type="submit"
             class="submit-button"
-            [disabled]="isSubmitting$ | async"
-            [attr.aria-busy]="(isSubmitting$ | async) ? 'true' : null"
+            #submitButton
+            [disabled]="isSubmitDisabled$ | async"
+            [attr.aria-busy]="(isSubmitDisabled$ | async) ? 'true' : null"
             aria-label="Submit event">
       Submit Event
     </button>
