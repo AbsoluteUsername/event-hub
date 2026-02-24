@@ -42,15 +42,15 @@ so that I always know a new event was created regardless of my filter and pagina
   - [x] 3.4 **Page 2+:** do NOT dispatch `loadEvents()` — user stays on current page; dispatch a new action `updateTotalCount` to increment `totalCount` by 1 in the events reducer; call `NotificationService.showInfo('New event added', 'Go to page 1', () => store.dispatch(changePage({ page: 1 })))` — no `markNewEvent` dispatch
   - [x] 3.5 Add `updateTotalCount` action + reducer handler in events store: `on(updateTotalCount, (state) => ({ ...state, totalCount: state.totalCount + 1 }))`
 
-- [ ] Task 4: Implement row insert animation in `EventsTableComponent` (AC: #1, #4)
-  - [ ] 4.1 Inject `AnimationService` and `Store` into `EventsTableComponent`
-  - [ ] 4.2 Add `trackById` function: `trackById(index: number, item: EventResponse): string => item.id` — add `[trackBy]="trackById"` on the `mat-table` `*matRowDef` or table element to prevent full DOM re-render on data change
-  - [ ] 4.3 Subscribe to `selectLastInsertedEventId` — store as a local signal `newEventId`
-  - [ ] 4.4 Add `[class.new-row]="row.id === newEventId()"` binding on `<tr mat-row>` to mark the new row
-  - [ ] 4.5 Use `afterRenderEffect()` or `AfterViewChecked` to detect when a `.new-row` element enters the DOM, then trigger Web Animations API animation on that element
-  - [ ] 4.6 **Full-motion animation sequence:** (a) Set `max-height: 0; overflow: hidden; opacity: 0` initially via class → (b) Animate `max-height` from `0` to row's `scrollHeight` over 300ms `ease-out` + opacity 0→1 → (c) After unfold completes, apply violet highlight `background: rgba(124,58,237,0.12)` → (d) After 1.5s, fade highlight to transparent over 500ms `ease-in-out` → (e) Dispatch `clearNewEvent()` to remove tracking
-  - [ ] 4.7 **Reduced-motion fallback:** If `!animationService.shouldAnimate()`: skip unfold animation (row appears instantly); apply static violet tint `background: rgba(124,58,237,0.12)` for 1s; remove tint instantly (no fade); dispatch `clearNewEvent()`
-  - [ ] 4.8 After animation or reduced-motion cycle completes, dispatch `clearNewEvent()` to clean up store state
+- [x] Task 4: Implement row insert animation in `EventsTableComponent` (AC: #1, #4)
+  - [x] 4.1 Inject `AnimationService` and `Store` into `EventsTableComponent`
+  - [x] 4.2 Add `trackById` function: `trackById(index: number, item: EventResponse): string => item.id` — add `[trackBy]="trackById"` on the `mat-table` `*matRowDef` or table element to prevent full DOM re-render on data change
+  - [x] 4.3 Subscribe to `selectLastInsertedEventId` — store as a local signal `newEventId`
+  - [x] 4.4 Add `[class.new-row]="row.id === newEventId()"` binding on `<tr mat-row>` to mark the new row
+  - [x] 4.5 Use `afterRenderEffect()` or `AfterViewChecked` to detect when a `.new-row` element enters the DOM, then trigger Web Animations API animation on that element
+  - [x] 4.6 **Full-motion animation sequence:** (a) Set `max-height: 0; overflow: hidden; opacity: 0` initially via class → (b) Animate `max-height` from `0` to row's `scrollHeight` over 300ms `ease-out` + opacity 0→1 → (c) After unfold completes, apply violet highlight `background: rgba(124,58,237,0.12)` → (d) After 1.5s, fade highlight to transparent over 500ms `ease-in-out` → (e) Dispatch `clearNewEvent()` to remove tracking
+  - [x] 4.7 **Reduced-motion fallback:** If `!animationService.shouldAnimate()`: skip unfold animation (row appears instantly); apply static violet tint `background: rgba(124,58,237,0.12)` for 1s; remove tint instantly (no fade); dispatch `clearNewEvent()`
+  - [x] 4.8 After animation or reduced-motion cycle completes, dispatch `clearNewEvent()` to clean up store state
 
 - [ ] Task 5: Fix FlyingChip DOM target query (pre-existing bug from Story 4.4) (AC: #1)
   - [ ] 5.1 In `app.component.html`, add `class="events-table"` to `<app-events-table>` element: `<app-events-table class="events-table"></app-events-table>` — this fixes the `document.querySelector('.events-table mat-header-row')` query in `EventFormComponent.launchFlyingChip()` which currently returns `null` (falling back to center-screen position)
