@@ -21,6 +21,7 @@
     } @else {
       <div class="table-wrapper">
         <table mat-table [dataSource]="(events$ | async) ?? []" matSort
+               [trackBy]="trackById"
                (matSortChange)="onSortChange($event)"
                matSortActive="createdAt" matSortDirection="desc">
 
@@ -65,7 +66,8 @@
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+              [class.new-row]="row.id === newEventId()"></tr>
         </table>
       </div>
 

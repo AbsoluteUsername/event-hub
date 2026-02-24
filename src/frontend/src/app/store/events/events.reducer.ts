@@ -11,6 +11,7 @@ export interface EventsState {
   filters: Partial<EventFilter>;
   pagination: { page: number; pageSize: number };
   sort: { sortBy: string; sortDir: 'asc' | 'desc' };
+  lastInsertedEventId: string | null;
 }
 
 export const initialEventsState: EventsState = {
@@ -21,6 +22,7 @@ export const initialEventsState: EventsState = {
   filters: {},
   pagination: { page: 1, pageSize: 20 },
   sort: { sortBy: 'createdAt', sortDir: 'desc' },
+  lastInsertedEventId: null,
 };
 
 export const eventsReducer = createReducer(
@@ -56,5 +58,17 @@ export const eventsReducer = createReducer(
   on(EventsActions.changeSort, (state, { sortBy, sortDir }) => ({
     ...state,
     sort: { sortBy, sortDir },
+  })),
+  on(EventsActions.markNewEvent, (state, { eventId }) => ({
+    ...state,
+    lastInsertedEventId: eventId,
+  })),
+  on(EventsActions.clearNewEvent, (state) => ({
+    ...state,
+    lastInsertedEventId: null,
+  })),
+  on(EventsActions.updateTotalCount, (state) => ({
+    ...state,
+    totalCount: state.totalCount + 1,
   }))
 );

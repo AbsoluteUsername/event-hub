@@ -72,6 +72,10 @@ table.mat-mdc-table {
   &:hover {
     background: var(--bg-elevated);
   }
+
+  &.new-row {
+    overflow: hidden;
+  }
 }
 
 // mat-paginator Glass overrides
