@@ -51,3 +51,8 @@ export const selectEventsQueryParams = createSelector(
     sortDir: sort.sortDir,
   })
 );
+
+export const selectLastInsertedEventId = createSelector(
+  selectEventsState,
+  (state) => state.lastInsertedEventId
+);

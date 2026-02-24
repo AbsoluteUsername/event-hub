@@ -30,6 +30,7 @@ describe('Events Selectors', () => {
     filters: { userId: 'olena', type: EventType.PageView },
     pagination: { page: 2, pageSize: 10 },
     sort: { sortBy: 'userId', sortDir: 'asc' },
+    lastInsertedEventId: null,
   };
 
   describe('selectEvents', () => {

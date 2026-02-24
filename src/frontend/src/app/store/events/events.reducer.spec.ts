@@ -163,4 +163,51 @@ describe('eventsReducer', () => {
       expect(state.sort).toEqual({ sortBy: 'userId', sortDir: 'asc' });
     });
   });
+
+  describe('markNewEvent', () => {
+    it('should set lastInsertedEventId to provided eventId', () => {
+      const state = eventsReducer(
+        initialEventsState,
+        EventsActions.markNewEvent({ eventId: 'event-123' })
+      );
+      expect(state.lastInsertedEventId).toBe('event-123');
+    });
+  });
+
+  describe('clearNewEvent', () => {
+    it('should reset lastInsertedEventId to null', () => {
+      const stateWithNewEvent: EventsState = {
+        ...initialEventsState,
+        lastInsertedEventId: 'event-123',
+      };
+      const state = eventsReducer(stateWithNewEvent, EventsActions.clearNewEvent());
+      expect(state.lastInsertedEventId).toBeNull();
+    });
+  });
+
+  describe('updateTotalCount', () => {
+    it('should increment totalCount by 1', () => {
+      const stateWithCount: EventsState = {
+        ...initialEventsState,
+        totalCount: 42,
+      };
+      const state = eventsReducer(stateWithCount, EventsActions.updateTotalCount());
+      expect(state.totalCount).toBe(43);
+    });
+  });
+
+  describe('loadEventsSuccess with lastInsertedEventId', () => {
+    it('should NOT clear lastInsertedEventId when loadEventsSuccess fires', () => {
+      const stateWithNewEvent: EventsState = {
+        ...initialEventsState,
+        lastInsertedEventId: 'event-123',
+        loading: true,
+      };
+      const state = eventsReducer(
+        stateWithNewEvent,
+        EventsActions.loadEventsSuccess({ result: mockPagedResult })
+      );
+      expect(state.lastInsertedEventId).toBe('event-123');
+    });
+  });
 });

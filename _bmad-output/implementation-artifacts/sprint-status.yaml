@@ -79,7 +79,7 @@ development_status:
   epic-4-retrospective: optional
 
   # Epic 5: UI Polish, Accessibility & Developer Documentation
-  epic-5: backlog
+  epic-5: in-progress
   5-1-responsive-layout-3-breakpoints: backlog
   5-2-keyboard-navigation-and-focus-management: backlog
   5-3-swagger-openapi-documentation: backlog

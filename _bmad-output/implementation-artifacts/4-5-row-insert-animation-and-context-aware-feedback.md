@@ -28,12 +28,12 @@ so that I always know a new event was created regardless of my filter and pagina
   - [x] 1.3 Configure: `duration: 6000`, `horizontalPosition: 'end'`, `verticalPosition: 'bottom'`, `panelClass: ['toast-info']`
   - [x] 1.4 Add `toast-info` panel class to `_material-overrides.scss` — matching existing toast pattern: `backdrop-filter: blur(16px)`, semi-transparent dark background, `border-left: 3px solid var(--accent)` (violet `#7c3aed`)
 
-- [ ] Task 2: Extend events NgRx store with new-row tracking (AC: #1, #3)
-  - [ ] 2.1 Add `lastInsertedEventId: string | null` to `EventsState` interface in `events.reducer.ts`
-  - [ ] 2.2 Add new action `markNewEvent` in `events.actions.ts`: `createAction('[Events] Mark New Event', props<{ eventId: string }>())`
-  - [ ] 2.3 Add new action `clearNewEvent` in `events.actions.ts`: `createAction('[Events] Clear New Event')`
-  - [ ] 2.4 Add reducer `on()` handlers: `markNewEvent` sets `lastInsertedEventId`, `clearNewEvent` resets to `null`
-  - [ ] 2.5 Add selector `selectLastInsertedEventId` in `events.selectors.ts`
+- [x] Task 2: Extend events NgRx store with new-row tracking (AC: #1, #3)
+  - [x] 2.1 Add `lastInsertedEventId: string | null` to `EventsState` interface in `events.reducer.ts`
+  - [x] 2.2 Add new action `markNewEvent` in `events.actions.ts`: `createAction('[Events] Mark New Event', props<{ eventId: string }>())`
+  - [x] 2.3 Add new action `clearNewEvent` in `events.actions.ts`: `createAction('[Events] Clear New Event')`
+  - [x] 2.4 Add reducer `on()` handlers: `markNewEvent` sets `lastInsertedEventId`, `clearNewEvent` resets to `null`
+  - [x] 2.5 Add selector `selectLastInsertedEventId` in `events.selectors.ts`
 
 - [ ] Task 3: Extend SignalR effects for context-aware feedback (AC: #1, #2, #3)
   - [ ] 3.1 Refactor `eventReceived$` effect in `signalr.effects.ts` to handle all 3 context scenarios (page 1 match, page 1 hidden, page 2+)

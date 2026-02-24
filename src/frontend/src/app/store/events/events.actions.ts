@@ -31,3 +31,13 @@ export const loadEventsFailure = createAction(
   '[Events API] Load Events Failure',
   props<{ error: string }>()
 );
+
+// New row tracking actions
+export const markNewEvent = createAction(
+  '[Events] Mark New Event',
+  props<{ eventId: string }>()
+);
+
+export const clearNewEvent = createAction('[Events] Clear New Event');
+
+export const updateTotalCount = createAction('[Events] Update Total Count');
