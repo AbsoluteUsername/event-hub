@@ -1,0 +1,56 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+}
+
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot--connected {
+  background-color: var(--success);
+  box-shadow: 0 0 8px var(--success);
+}
+
+.dot--reconnecting {
+  background-color: var(--warning);
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+.dot--disconnected {
+  background-color: var(--text-disabled);
+}
+
+.label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px var(--warning);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 16px var(--warning);
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot--reconnecting {
+    animation: none;
+    box-shadow: 0 0 8px var(--warning);
+  }
+}

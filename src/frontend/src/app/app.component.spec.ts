@@ -10,6 +10,7 @@ import {
   selectEventsPagination,
   selectEventsSort,
 } from './store/events/events.selectors';
+import { selectConnectionStatus } from './store/signalr/signalr.selectors';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -28,6 +29,7 @@ describe('AppComponent', () => {
             { selector: selectEventsLoading, value: false },
             { selector: selectEventsPagination, value: { page: 1, pageSize: 20 } },
             { selector: selectEventsSort, value: { sortBy: 'createdAt', sortDir: 'desc' } },
+            { selector: selectConnectionStatus, value: 'disconnected' },
           ],
         }),
       ],
@@ -57,9 +59,9 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('app-event-form')).toBeTruthy();
   });
 
-  it('should render the SignalR placeholder', () => {
+  it('should render the SignalR status dot component', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.signalr-placeholder')).toBeTruthy();
+    expect(compiled.querySelector('app-signalr-status-dot')).toBeTruthy();
   });
 });
