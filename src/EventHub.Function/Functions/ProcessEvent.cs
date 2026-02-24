@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using EventHub.Application.Messages;
 using EventHub.Function.Services;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Extensions.SignalRService;
 using Microsoft.Extensions.Logging;
 
 namespace EventHub.Function.Functions;
@@ -25,7 +26,8 @@ public class ProcessEvent
     }
 
     [Function("ProcessEvent")]
-    public async Task Run(
+    [SignalROutput(HubName = "eventHub", ConnectionStringSetting = "AzureSignalRConnectionString")]
+    public async Task<SignalRMessageAction?> Run(
         [ServiceBusTrigger("events", Connection = "ServiceBus")] string messageBody)
     {
         _logger.LogInformation("Processing event message: {MessageBody}", messageBody);
@@ -33,8 +35,29 @@ public class ProcessEvent
         var eventMessage = JsonSerializer.Deserialize<EventMessage>(messageBody, JsonOptions)
             ?? throw new InvalidOperationException("Failed to deserialize event message: deserialization returned null");
 
-        await _processingService.ProcessAsync(eventMessage);
+        var persistedEvent = await _processingService.ProcessAsync(eventMessage);
 
-        _logger.LogInformation("Event {EventId} processed successfully", eventMessage.Id);
+        if (persistedEvent is null)
+        {
+            _logger.LogInformation("Duplicate event ignored, no broadcast");
+            return null;
+        }
+
+        _logger.LogInformation("Broadcasting newEvent for {EventId}", persistedEvent.Id);
+
+        return new SignalRMessageAction("newEvent")
+        {
+            Arguments = new object[]
+            {
+                new
+                {
+                    id = persistedEvent.Id,
+                    userId = persistedEvent.UserId,
+                    type = persistedEvent.Type.ToString(),
+                    description = persistedEvent.Description,
+                    createdAt = persistedEvent.CreatedAt
+                }
+            }
+        };
     }
 }

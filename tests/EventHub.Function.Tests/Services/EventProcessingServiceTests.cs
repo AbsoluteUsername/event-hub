@@ -40,9 +40,11 @@ public class EventProcessingServiceTests
             .ReturnsAsync((Event e) => e);
 
         // Act
-        await _sut.ProcessAsync(message);
+        var result = await _sut.ProcessAsync(message);
 
         // Assert
+        Assert.NotNull(result);
+        Assert.Equal(message.Id, result.Id);
         _repositoryMock.Verify(r => r.CreateAsync(It.Is<Event>(e =>
             e.Id == message.Id &&
             e.UserId == message.UserId &&
@@ -64,22 +66,20 @@ public class EventProcessingServiceTests
             CreatedAt = new DateTime(2026, 2, 23, 10, 0, 0, DateTimeKind.Utc)
         };
 
-        Event? capturedEvent = null;
         _repositoryMock
             .Setup(r => r.CreateAsync(It.IsAny<Event>()))
-            .Callback<Event>(e => capturedEvent = e)
             .ReturnsAsync((Event e) => e);
 
         // Act
-        await _sut.ProcessAsync(message);
+        var result = await _sut.ProcessAsync(message);
 
         // Assert
-        Assert.NotNull(capturedEvent);
-        Assert.Equal(message.Id, capturedEvent.Id);
-        Assert.Equal(message.UserId, capturedEvent.UserId);
-        Assert.Equal(message.Type, capturedEvent.Type);
-        Assert.Equal(message.Description, capturedEvent.Description);
-        Assert.Equal(message.CreatedAt, capturedEvent.CreatedAt);
+        Assert.NotNull(result);
+        Assert.Equal(message.Id, result.Id);
+        Assert.Equal(message.UserId, result.UserId);
+        Assert.Equal(message.Type, result.Type);
+        Assert.Equal(message.Description, result.Description);
+        Assert.Equal(message.CreatedAt, result.CreatedAt);
     }
 
     [Fact]
@@ -102,8 +102,11 @@ public class EventProcessingServiceTests
             .Setup(r => r.CreateAsync(It.IsAny<Event>()))
             .ThrowsAsync(dbUpdateException);
 
-        // Act & Assert — should not throw
-        await _sut.ProcessAsync(message);
+        // Act
+        var result = await _sut.ProcessAsync(message);
+
+        // Assert — returns null on duplicate
+        Assert.Null(result);
 
         // Verify warning was logged
         _loggerMock.Verify(
@@ -136,8 +139,11 @@ public class EventProcessingServiceTests
             .Setup(r => r.CreateAsync(It.IsAny<Event>()))
             .ThrowsAsync(dbUpdateException);
 
-        // Act & Assert — should not throw
-        await _sut.ProcessAsync(message);
+        // Act
+        var result = await _sut.ProcessAsync(message);
+
+        // Assert — returns null on unique index violation
+        Assert.Null(result);
     }
 
     [Fact]
@@ -181,9 +187,11 @@ public class EventProcessingServiceTests
             .ReturnsAsync((Event e) => e);
 
         // Act
-        await _sut.ProcessAsync(message);
+        var result = await _sut.ProcessAsync(message);
 
-        // Assert — verify Information level log was made
+        // Assert — returns persisted entity and logs
+        Assert.NotNull(result);
+        Assert.Equal(message.Id, result.Id);
         _loggerMock.Verify(
             x => x.Log(
                 LogLevel.Information,

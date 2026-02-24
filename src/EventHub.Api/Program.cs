@@ -1,6 +1,7 @@
 using EventHub.Api.Middleware;
 using EventHub.Application.Extensions;
 using EventHub.Infrastructure.Extensions;
+using Microsoft.Azure.SignalR.Management;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,11 @@ builder.Host.UseSerilog((context, config) => config
 // DI registrations
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+// Azure SignalR Management (serverless negotiate only — ADR-3)
+builder.Services.AddSingleton(new ServiceManagerBuilder()
+    .WithOptions(o => o.ConnectionString = builder.Configuration["AzureSignalRConnectionString"])
+    .BuildServiceManager());
 
 // Controllers with custom validation error response format (FR23)
 builder.Services.AddControllers()
