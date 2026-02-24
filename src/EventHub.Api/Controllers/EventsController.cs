@@ -20,9 +20,18 @@ public class EventsController : ControllerBase
         _eventRepository = eventRepository;
     }
 
+    /// <summary>
+    /// Submits a new event to the processing pipeline.
+    /// </summary>
+    /// <param name="request">Event creation payload with UserId, Type, and Description.</param>
+    /// <returns>The created event with generated Id and CreatedAt timestamp.</returns>
+    /// <response code="201">Event accepted and queued for async processing.</response>
+    /// <response code="400">Validation failed — returns field-level error details: {"errors": {"field": "message"}}.</response>
+    /// <response code="500">Unexpected server error — returns {"errors": {"server": "An unexpected error occurred."}}.</response>
     [HttpPost]
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<EventResponse>> Create(CreateEventRequest request)
     {
         var id = Guid.NewGuid();
@@ -54,11 +63,15 @@ public class EventsController : ControllerBase
     }
 
     /// <summary>
-    /// Retrieves events with optional filtering, sorting, and pagination.
-    /// Query parameters: type, userId, description, from, to, page, pageSize, sortBy, sortDir.
+    /// Retrieves a paginated, filtered, and sorted list of events.
     /// </summary>
+    /// <param name="filter">Query parameters: type, userId, description, from, to, page, pageSize, sortBy, sortDir.</param>
+    /// <returns>Paged result containing items, totalCount, page, and pageSize.</returns>
+    /// <response code="200">Successfully retrieved events.</response>
+    /// <response code="500">Unexpected server error — returns {"errors": {"server": "An unexpected error occurred."}}.</response>
     [HttpGet]
     [ProducesResponseType(typeof(PagedResult<EventResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<PagedResult<EventResponse>>> GetAll([FromQuery] EventFilter filter)
     {
         var result = await _eventRepository.GetAllAsync(filter);

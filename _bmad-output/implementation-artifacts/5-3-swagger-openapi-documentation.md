@@ -33,11 +33,11 @@ so that I can understand and integrate with Event Hub API without reading source
   - [x] 2.3 Also include the Application layer XML file: `var appXmlFile = "EventHub.Application.xml"; var appXmlPath = Path.Combine(AppContext.BaseDirectory, appXmlFile); c.IncludeXmlComments(appXmlPath, includeControllerXmlComments: false);` — adds DTO property descriptions to Swagger schemas
   - [x] 2.4 Add `using System.Reflection;` and `using Microsoft.OpenApi.Models;` at the top of `Program.cs`
 
-- [ ] Task 3: Add XML documentation to `EventsController` (AC: #2, #3, #4)
-  - [ ] 3.1 Add `/// <summary>Submits a new event to the processing pipeline.</summary>` + `/// <param name="request">Event creation payload with UserId, Type, and Description.</param>` + `/// <returns>The created event with generated Id and CreatedAt timestamp.</returns>` above the `[HttpPost]` `Create` action
-  - [ ] 3.2 Add `[ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]` to the `Create` action to document the 500 error scenario (matches AC#2 requirement)
-  - [ ] 3.3 Replace the existing partial `/// <summary>` block on the `GetAll` action with a complete XML doc: `/// <summary>Retrieves a paginated, filtered, and sorted list of events.</summary>` + `/// <param name="filter">Query parameters: type, userId, description, from, to, page, pageSize, sortBy, sortDir.</param>` + `/// <returns>Paged result with items, totalCount, page, and pageSize.</returns>`
-  - [ ] 3.4 Add `[ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]` to the `GetAll` action
+- [x] Task 3: Add XML documentation to `EventsController` (AC: #2, #3, #4)
+  - [x] 3.1 Add `/// <summary>Submits a new event to the processing pipeline.</summary>` + `/// <param name="request">Event creation payload with UserId, Type, and Description.</param>` + `/// <returns>The created event with generated Id and CreatedAt timestamp.</returns>` above the `[HttpPost]` `Create` action
+  - [x] 3.2 Add `[ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]` to the `Create` action to document the 500 error scenario (matches AC#2 requirement)
+  - [x] 3.3 Replace the existing partial `/// <summary>` block on the `GetAll` action with a complete XML doc: `/// <summary>Retrieves a paginated, filtered, and sorted list of events.</summary>` + `/// <param name="filter">Query parameters: type, userId, description, from, to, page, pageSize, sortBy, sortDir.</param>` + `/// <returns>Paged result with items, totalCount, page, and pageSize.</returns>`
+  - [x] 3.4 Add `[ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]` to the `GetAll` action
 
 - [ ] Task 4: Add XML documentation to `NegotiateController` (AC: #1, #4)
   - [ ] 4.1 Add `/// <summary>Returns Azure SignalR Service connection info for client WebSocket connections.</summary>` + `/// <returns>SignalR negotiation response with endpoint URL and access token.</returns>` above the `[HttpPost]` `Negotiate` action
