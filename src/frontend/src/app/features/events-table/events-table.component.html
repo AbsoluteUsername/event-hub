@@ -12,10 +12,12 @@
     @if ((loading$ | async) === false && (events$ | async)?.length === 0) {
       @if (hasActiveFilters()) {
         <app-empty-state mode="no-results"
+                         [layout]="isMobile() ? 'stacked' : 'side-by-side'"
                          (clearFilters)="onClearFilters()">
         </app-empty-state>
       } @else {
-        <app-empty-state mode="no-data">
+        <app-empty-state mode="no-data"
+                         [layout]="isMobile() ? 'stacked' : 'side-by-side'">
         </app-empty-state>
       }
     } @else {

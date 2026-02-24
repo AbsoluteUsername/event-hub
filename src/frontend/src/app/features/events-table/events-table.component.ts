@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Store } from '@ngrx/store';
 import { Sort, MatSortModule, MatSort } from '@angular/material/sort';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
@@ -46,6 +47,7 @@ export class EventsTableComponent implements OnInit, AfterViewChecked {
   private readonly store = inject(Store);
   private readonly animationService = inject(AnimationService);
   private readonly elementRef = inject(ElementRef);
+  private readonly breakpointObserver = inject(BreakpointObserver);
 
   readonly events$ = this.store.select(selectEvents);
   readonly totalCount$ = this.store.select(selectEventsTotalCount);
@@ -56,8 +58,9 @@ export class EventsTableComponent implements OnInit, AfterViewChecked {
 
   hasActiveFilters = signal(false);
   readonly newEventId = signal<string | null>(null);
+  readonly isMobile = signal(false);
 
-  displayedColumns = ['id', 'userId', 'type', 'description', 'createdAt'];
+  displayedColumns: string[] = ['id', 'userId', 'type', 'description', 'createdAt'];
   private lastAnimatedId: string | null = null;
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -76,6 +79,16 @@ export class EventsTableComponent implements OnInit, AfterViewChecked {
     ).subscribe(id => {
       this.newEventId.set(id);
     });
+
+    this.breakpointObserver
+      .observe(['(min-width: 1024px)', '(max-width: 767.98px)'])
+      .pipe(takeUntilDestroyed())
+      .subscribe(result => {
+        this.isMobile.set(result.breakpoints['(max-width: 767.98px)'] ?? false);
+        this.displayedColumns = result.breakpoints['(min-width: 1024px)']
+          ? ['id', 'userId', 'type', 'description', 'createdAt']
+          : ['userId', 'type', 'createdAt'];
+      });
   }
 
   ngOnInit(): void {

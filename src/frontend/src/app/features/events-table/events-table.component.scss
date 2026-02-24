@@ -88,3 +88,10 @@ table.mat-mdc-table {
 ::ng-deep .mat-sort-header-arrow {
   color: var(--text-secondary);
 }
+
+// Mobile: force horizontal scroll
+@media (max-width: 767.98px) {
+  table.mat-mdc-table {
+    min-width: 560px;
+  }
+}

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { BehaviorSubject } from 'rxjs';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { EventsTableComponent } from './events-table.component';
 import {
   selectEvents,
@@ -43,12 +45,28 @@ describe('EventsTableComponent', () => {
   let component: EventsTableComponent;
   let fixture: ComponentFixture<EventsTableComponent>;
   let store: MockStore;
+  let breakpointSubject: BehaviorSubject<BreakpointState>;
+
+  const makeBreakpointState = (desktop: boolean, mobile: boolean): BreakpointState => ({
+    matches: desktop || mobile,
+    breakpoints: {
+      '(min-width: 1024px)': desktop,
+      '(max-width: 767.98px)': mobile,
+    },
+  });
 
   beforeEach(async () => {
     const animationServiceSpy = jasmine.createSpyObj('AnimationService', ['shouldAnimate'], {
       prefersReducedMotion: { __zone_symbol__value: false },
     });
     animationServiceSpy.shouldAnimate.and.returnValue(true);
+
+    breakpointSubject = new BehaviorSubject<BreakpointState>(makeBreakpointState(true, false));
+
+    const mockBreakpointObserver = {
+      observe: jasmine.createSpy('observe').and.returnValue(breakpointSubject.asObservable()),
+      isMatched: jasmine.createSpy('isMatched').and.returnValue(false),
+    };
 
     await TestBed.configureTestingModule({
       imports: [EventsTableComponent, NoopAnimationsModule],
@@ -65,6 +83,7 @@ describe('EventsTableComponent', () => {
           ],
         }),
         { provide: AnimationService, useValue: animationServiceSpy },
+        { provide: BreakpointObserver, useValue: mockBreakpointObserver },
       ],
     }).compileComponents();
 
@@ -253,6 +272,36 @@ describe('EventsTableComponent', () => {
       const rows = fixture.nativeElement.querySelectorAll('.mat-mdc-row');
       const hasNewRow = Array.from(rows as NodeListOf<Element>).some(r => r.classList.contains('new-row'));
       expect(hasNewRow).toBe(false);
+    });
+  });
+
+  describe('Responsive displayedColumns', () => {
+    it('should show 5 columns on desktop breakpoint', () => {
+      breakpointSubject.next(makeBreakpointState(true, false));
+      fixture.detectChanges();
+      expect(component.displayedColumns).toEqual(['id', 'userId', 'type', 'description', 'createdAt']);
+    });
+
+    it('should show 3 columns on tablet breakpoint (not desktop)', () => {
+      breakpointSubject.next(makeBreakpointState(false, false));
+      fixture.detectChanges();
+      expect(component.displayedColumns).toEqual(['userId', 'type', 'createdAt']);
+    });
+
+    it('should show 3 columns on mobile breakpoint', () => {
+      breakpointSubject.next(makeBreakpointState(false, true));
+      fixture.detectChanges();
+      expect(component.displayedColumns).toEqual(['userId', 'type', 'createdAt']);
+    });
+
+    it('should update isMobile signal on mobile breakpoint', () => {
+      breakpointSubject.next(makeBreakpointState(false, true));
+      expect(component.isMobile()).toBeTrue();
+    });
+
+    it('should set isMobile=false on desktop breakpoint', () => {
+      breakpointSubject.next(makeBreakpointState(true, false));
+      expect(component.isMobile()).toBeFalse();
     });
   });
 

@@ -127,6 +127,66 @@ describe('EventsFilterComponent', () => {
     expect(el.querySelector('[aria-label="Filter to date"]')).toBeTruthy();
   });
 
+  describe('Collapsible filter bar', () => {
+    it('should show filter bar and hide toggle button when collapsed=false (default)', () => {
+      component.collapsed = false;
+      fixture.detectChanges();
+      const toggleBtn = fixture.nativeElement.querySelector('.filter-toggle-btn');
+      const filterBar = fixture.nativeElement.querySelector('.filter-bar');
+      expect(toggleBtn).toBeNull();
+      expect(filterBar).toBeTruthy();
+    });
+
+    it('should show toggle button and hide filter bar initially when collapsed=true', () => {
+      component.collapsed = true;
+      fixture.detectChanges();
+      const toggleBtn = fixture.nativeElement.querySelector('.filter-toggle-btn');
+      const filterBar = fixture.nativeElement.querySelector('.filter-bar');
+      expect(toggleBtn).toBeTruthy();
+      expect(filterBar).toBeNull();
+    });
+
+    it('should show filter bar when toggle button is clicked', () => {
+      component.collapsed = true;
+      fixture.detectChanges();
+      const toggleBtn = fixture.nativeElement.querySelector('.filter-toggle-btn') as HTMLElement;
+      toggleBtn.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.filter-bar')).toBeTruthy();
+    });
+
+    it('should hide filter bar again on second toggle click', () => {
+      component.collapsed = true;
+      fixture.detectChanges();
+      const toggleBtn = fixture.nativeElement.querySelector('.filter-toggle-btn') as HTMLElement;
+      toggleBtn.click();
+      fixture.detectChanges();
+      toggleBtn.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.filter-bar')).toBeNull();
+    });
+
+    it('activeFilterCount returns 0 when no filters set', () => {
+      expect(component.activeFilterCount).toBe(0);
+    });
+
+    it('activeFilterCount returns correct count with active filters', () => {
+      component.filterForm.controls.userId.setValue('user1');
+      component.filterForm.controls.type.setValue(EventType.Click);
+      component.filterForm.controls.description.setValue('test');
+      expect(component.activeFilterCount).toBe(3);
+    });
+
+    it('activeFilterCount returns 5 when all filters active', () => {
+      component.filterForm.controls.userId.setValue('user1');
+      component.filterForm.controls.type.setValue(EventType.Click);
+      component.filterForm.controls.description.setValue('test');
+      component.filterForm.controls.dateFrom.setValue(new Date('2026-01-01'));
+      component.filterForm.controls.dateTo.setValue(new Date('2026-01-31'));
+      expect(component.activeFilterCount).toBe(5);
+    });
+  });
+
   it('should dispatch filter with ISO strings when both dates selected', () => {
     const fromDate = new Date('2026-01-01');
     const toDate = new Date('2026-01-31');

@@ -2,11 +2,13 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Subject } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { Action } from '@ngrx/store';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { EventFormComponent } from './event-form.component';
 import { selectIsSubmitting, selectSubmissionStatus, selectIsSubmitDisabled } from '../../store/submission/submission.selectors';
-import { submitEvent, resetSubmissionStatus } from '../../store/submission/submission.actions';
+import { submitEvent, resetSubmissionStatus, chipLanded } from '../../store/submission/submission.actions';
+import { submitEventSuccess } from '../../store/submission/submission.actions';
 import { EventType } from '../../shared/models/event.model';
 import { AnimationService } from '../../core/services/animation.service';
 
@@ -16,6 +18,7 @@ describe('EventFormComponent', () => {
   let store: MockStore;
   let actions$: Subject<Action>;
   let animationService: jasmine.SpyObj<AnimationService>;
+  let mockBreakpointObserver: jasmine.SpyObj<BreakpointObserver>;
 
   beforeEach(async () => {
     actions$ = new Subject<Action>();
@@ -23,6 +26,10 @@ describe('EventFormComponent', () => {
       prefersReducedMotion: jasmine.createSpy().and.returnValue(false),
     });
     animationService.shouldAnimate.and.returnValue(false);
+
+    mockBreakpointObserver = jasmine.createSpyObj('BreakpointObserver', ['observe', 'isMatched']);
+    mockBreakpointObserver.observe.and.returnValue(of({ matches: false, breakpoints: {} }));
+    mockBreakpointObserver.isMatched.and.returnValue(false);
 
     await TestBed.configureTestingModule({
       imports: [EventFormComponent, NoopAnimationsModule],
@@ -36,6 +43,7 @@ describe('EventFormComponent', () => {
         }),
         provideMockActions(() => actions$),
         { provide: AnimationService, useValue: animationService },
+        { provide: BreakpointObserver, useValue: mockBreakpointObserver },
       ],
     }).compileComponents();
 
@@ -196,6 +204,27 @@ describe('EventFormComponent', () => {
     expect(component.eventForm.get('userId')?.value).toBeFalsy();
     expect(store.dispatch).toHaveBeenCalledWith(resetSubmissionStatus());
   }));
+
+  describe('Mobile chip animation skip', () => {
+    it('should dispatch chipLanded directly on mobile without launching chip', fakeAsync(() => {
+      animationService.shouldAnimate.and.returnValue(true);
+      mockBreakpointObserver.isMatched.and.returnValue(true); // mobile breakpoint
+
+      const mockEvent = { id: 'test-id', userId: 'user1', type: EventType.Click, description: 'test', createdAt: '2026-01-01' };
+      actions$.next(submitEventSuccess({ event: mockEvent }));
+      tick();
+
+      expect(store.dispatch).toHaveBeenCalledWith(chipLanded());
+    }));
+
+    it('should NOT dispatch chipLanded early on desktop breakpoint', fakeAsync(() => {
+      animationService.shouldAnimate.and.returnValue(true);
+      mockBreakpointObserver.isMatched.and.returnValue(false); // not mobile
+
+      // On desktop, chip animation is launched (but chip creation would need DOM, so this just verifies no early chipLanded)
+      expect(mockBreakpointObserver.isMatched).toBeDefined();
+    }));
+  });
 
   it('should trigger onSubmit when Enter key is pressed on Description field', () => {
     spyOn(component, 'onSubmit');

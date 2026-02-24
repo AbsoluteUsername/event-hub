@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, signal, Input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatBadgeModule } from '@angular/material/badge';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { Store } from '@ngrx/store';
 import { debounceTime, distinctUntilChanged, merge, take } from 'rxjs';
@@ -26,6 +27,7 @@ import { GlassPanelComponent } from '../../shared/components/glass-panel/glass-p
     MatButtonModule,
     MatIconModule,
     MatDatepickerModule,
+    MatBadgeModule,
     GlassPanelComponent,
   ],
   providers: [provideNativeDateAdapter()],
@@ -33,10 +35,13 @@ import { GlassPanelComponent } from '../../shared/components/glass-panel/glass-p
   styleUrl: './events-filter.component.scss',
 })
 export class EventsFilterComponent {
+  @Input() collapsed = false;
+
   private readonly store = inject(Store);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly EventType = EventType;
+  readonly isExpanded = signal(false);
 
   filterForm = new FormGroup({
     userId: new FormControl(''),
@@ -51,6 +56,25 @@ export class EventsFilterComponent {
   constructor() {
     this.hydrateFromStore();
     this.setupFilterSubscriptions();
+  }
+
+  get showFilterBar(): boolean {
+    return !this.collapsed || this.isExpanded();
+  }
+
+  get activeFilterCount(): number {
+    const val = this.filterForm.value;
+    let count = 0;
+    if (val.userId) count++;
+    if (val.type) count++;
+    if (val.description) count++;
+    if (val.dateFrom) count++;
+    if (val.dateTo) count++;
+    return count;
+  }
+
+  toggleFilters(): void {
+    this.isExpanded.update(v => !v);
   }
 
   clearFilters(): void {

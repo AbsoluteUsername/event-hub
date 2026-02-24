@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class EmptyStateComponent {
   mode = input<'no-data' | 'no-results'>('no-data');
+  layout = input<'side-by-side' | 'stacked'>('side-by-side');
   clearFilters = output<void>();
 
   onClearFilters(): void {
