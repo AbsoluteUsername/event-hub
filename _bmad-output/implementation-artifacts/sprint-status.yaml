@@ -75,7 +75,7 @@ development_status:
   4-2-angular-signalr-service-and-ngrx-integration: review
   4-3-signalr-status-dot-component: review
   4-4-flying-chip-animation: review
-  4-5-row-insert-animation-and-context-aware-feedback: in-progress
+  4-5-row-insert-animation-and-context-aware-feedback: review
   epic-4-retrospective: optional
 
   # Epic 5: UI Polish, Accessibility & Developer Documentation

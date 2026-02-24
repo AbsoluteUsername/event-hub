@@ -1,6 +1,6 @@
 # Story 4.5: Row Insert Animation & Context-Aware Feedback
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -466,6 +466,15 @@ Claude Opus 4.6
 
 ### Completion Notes List
 
+**Implementation completed 2026-02-24 by Claude Sonnet 4.6:**
+- Task 1: Added `showInfo(message, actionLabel?, onAction?)` to NotificationService; added `toast-info` CSS class to `_material-overrides.scss` (violet `--accent` left border, glass background)
+- Task 2: Extended EventsState with `lastInsertedEventId: string | null`; added `markNewEvent`, `clearNewEvent`, `updateTotalCount` actions + reducer handlers + `selectLastInsertedEventId` selector
+- Task 3: Refactored `eventReceived$` from simple page-1 filter to 3-branch switchMap context analyzer (page 1 match / page 1 hidden / page 2+); injected `NotificationService`; added `eventMatchesFilters()` private helper
+- Task 4: Extended `EventsTableComponent` with `AnimationService` injection, `trackById`, `newEventId` signal, `ngAfterViewChecked` DOM detection, Web Animations API `animateNewRow()` with reduced-motion fallback; added `[trackBy]` and `[class.new-row]` bindings to template; added `.new-row` SCSS style
+- Task 5: Added `class="events-table"` to `<app-events-table>` in `app.component.html` — fixes pre-existing FlyingChip DOM target query returning null
+- Task 6: Extended all 4 test files with 24 new tests; all 210 tests pass; `ng build` succeeds with zero errors
+- Also fixed `events.selectors.spec.ts` to include `lastInsertedEventId: null` in the manually-typed `EventsState` object
+
 - Ultimate context engine analysis completed — comprehensive developer guide created
 - This story completes the "send → watch → arrive" experience — row animation is the visual payoff for the flying chip
 - Story depends on Story 4.4 being completed (AnimationService, FlyingChipComponent, chip lifecycle states) — confirmed review status
@@ -500,3 +509,10 @@ Claude Opus 4.6
 - `src/frontend/src/app/features/events-table/events-table.component.spec.ts` (modified)
 - `src/frontend/src/app/app.component.html` (modified)
 - `src/frontend/src/styles/_material-overrides.scss` (modified)
+- `src/frontend/src/app/store/events/events.selectors.spec.ts` (modified — added `lastInsertedEventId` to typed state object)
+
+## Change Log
+
+| Date | Change | Author |
+|------|--------|--------|
+| 2026-02-24 | Implemented Story 4.5: Row Insert Animation & Context-Aware Feedback. Added `showInfo` to NotificationService with action callback; extended events NgRx store with `lastInsertedEventId` tracking (`markNewEvent`, `clearNewEvent`, `updateTotalCount` actions); refactored SignalR effects to 3-branch context analyzer (page 1 match → animate, page 1 filtered → toast, page 2+ → count increment + toast); added row unfold + violet highlight animation with Web Animations API to EventsTableComponent; fixed FlyingChip DOM query bug; added 24 new tests (210 total, 0 failures). | Claude Sonnet 4.6 |
