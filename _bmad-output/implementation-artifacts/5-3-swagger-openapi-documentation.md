@@ -27,11 +27,11 @@ so that I can understand and integrate with Event Hub API without reading source
   - [x] 1.2 In `src/EventHub.Application/EventHub.Application.csproj`, add `<GenerateDocumentationFile>true</GenerateDocumentationFile>` and `<NoWarn>$(NoWarn);1591</NoWarn>` — required for DTO property descriptions to appear in Swagger
   - [x] 1.3 Verify `dotnet build` succeeds with zero errors after the csproj changes
 
-- [ ] Task 2: Configure Swashbuckle to use XML comments and API metadata (AC: #1, #2, #3, #4)
-  - [ ] 2.1 In `src/EventHub.Api/Program.cs`, replace the bare `builder.Services.AddSwaggerGen()` call with a configured version that sets `c.SwaggerDoc("v1", new OpenApiInfo {...})` with title "Event Hub API", version "v1", and a short description
-  - [ ] 2.2 In the same `AddSwaggerGen()` call, add the XML comments include for the Api project: `var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"; var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile); c.IncludeXmlComments(xmlPath);`
-  - [ ] 2.3 Also include the Application layer XML file: `var appXmlFile = "EventHub.Application.xml"; var appXmlPath = Path.Combine(AppContext.BaseDirectory, appXmlFile); c.IncludeXmlComments(appXmlPath, includeControllerXmlComments: false);` — adds DTO property descriptions to Swagger schemas
-  - [ ] 2.4 Add `using System.Reflection;` and `using Microsoft.OpenApi.Models;` at the top of `Program.cs`
+- [x] Task 2: Configure Swashbuckle to use XML comments and API metadata (AC: #1, #2, #3, #4)
+  - [x] 2.1 In `src/EventHub.Api/Program.cs`, replace the bare `builder.Services.AddSwaggerGen()` call with a configured version that sets `c.SwaggerDoc("v1", new OpenApiInfo {...})` with title "Event Hub API", version "v1", and a short description
+  - [x] 2.2 In the same `AddSwaggerGen()` call, add the XML comments include for the Api project: `var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"; var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile); c.IncludeXmlComments(xmlPath);`
+  - [x] 2.3 Also include the Application layer XML file: `var appXmlFile = "EventHub.Application.xml"; var appXmlPath = Path.Combine(AppContext.BaseDirectory, appXmlFile); c.IncludeXmlComments(appXmlPath, includeControllerXmlComments: false);` — adds DTO property descriptions to Swagger schemas
+  - [x] 2.4 Add `using System.Reflection;` and `using Microsoft.OpenApi.Models;` at the top of `Program.cs`
 
 - [ ] Task 3: Add XML documentation to `EventsController` (AC: #2, #3, #4)
   - [ ] 3.1 Add `/// <summary>Submits a new event to the processing pipeline.</summary>` + `/// <param name="request">Event creation payload with UserId, Type, and Description.</param>` + `/// <returns>The created event with generated Id and CreatedAt timestamp.</returns>` above the `[HttpPost]` `Create` action

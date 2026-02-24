@@ -1,7 +1,9 @@
+using System.Reflection;
 using EventHub.Api.Middleware;
 using EventHub.Application.Extensions;
 using EventHub.Infrastructure.Extensions;
 using Microsoft.Azure.SignalR.Management;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,7 +43,26 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Event Hub API",
+        Version = "v1",
+        Description = "REST API for submitting and querying events. Supports server-side filtering, sorting, and pagination."
+    });
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+
+    var appXmlFile = "EventHub.Application.xml";
+    var appXmlPath = Path.Combine(AppContext.BaseDirectory, appXmlFile);
+    if (File.Exists(appXmlPath))
+    {
+        c.IncludeXmlComments(appXmlPath);
+    }
+});
 
 // CORS
 builder.Services.AddCors(options =>
