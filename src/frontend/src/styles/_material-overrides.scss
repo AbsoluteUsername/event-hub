@@ -11,6 +11,7 @@ html {
 
   // Override M3 system tokens to match Glass design
   & {
+    --mat-sys-focus-indicator-color: var(--accent);
     --mat-sys-primary: #7c3aed;
     --mat-sys-on-primary: #ffffff;
     --mat-sys-surface: #111111;

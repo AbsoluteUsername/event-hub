@@ -132,13 +132,14 @@ describe('EventFormComponent', () => {
     expect(component.eventForm.get('description')?.touched).toBeTrue();
   });
 
-  it('should disable Submit button when isSubmitDisabled is true', () => {
+  it('should set aria-disabled on Submit button when isSubmitDisabled is true (remains focusable)', () => {
     store.overrideSelector(selectIsSubmitDisabled, true);
     store.refreshState();
     fixture.detectChanges();
 
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]') as HTMLButtonElement;
-    expect(submitButton.disabled).toBeTrue();
+    expect(submitButton.getAttribute('aria-disabled')).toBe('true');
+    expect(submitButton.disabled).toBeFalse(); // Must NOT be natively disabled — stays in tab order
   });
 
   it('should have aria-busy on Submit button when isSubmitDisabled is true', () => {
@@ -150,13 +151,30 @@ describe('EventFormComponent', () => {
     expect(submitButton.getAttribute('aria-busy')).toBe('true');
   });
 
-  it('should keep Submit button disabled during chip animation cycle', () => {
+  it('should NOT dispatch submitEvent when aria-disabled is set (double-submit guard)', () => {
+    store.overrideSelector(selectIsSubmitDisabled, true);
+    store.refreshState();
+    fixture.detectChanges();
+
+    component.eventForm.get('userId')!.setValue('testUser');
+    component.eventForm.get('type')!.setValue(EventType.Click);
+    component.eventForm.get('description')!.setValue('Test description');
+
+    component.onSubmit();
+
+    expect(store.dispatch).not.toHaveBeenCalledWith(
+      jasmine.objectContaining({ type: '[Event Form] Submit Event' })
+    );
+  });
+
+  it('should keep Submit button aria-disabled during chip animation cycle', () => {
     store.overrideSelector(selectIsSubmitDisabled, true);
     store.refreshState();
     fixture.detectChanges();
 
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]') as HTMLButtonElement;
-    expect(submitButton.disabled).toBeTrue();
+    expect(submitButton.getAttribute('aria-disabled')).toBe('true');
+    expect(submitButton.disabled).toBeFalse();
   });
 
   it('should reset form on submitEventSuccess status', fakeAsync(() => {

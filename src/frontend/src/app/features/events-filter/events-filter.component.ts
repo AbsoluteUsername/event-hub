@@ -86,6 +86,11 @@ export class EventsFilterComponent {
     control.setValue('');
   }
 
+  clearDateRange(): void {
+    this.filterForm.controls.dateFrom.setValue(null);
+    this.filterForm.controls.dateTo.setValue(null);
+  }
+
   private hydrateFromStore(): void {
     this.store
       .select(selectEventsFilters)
