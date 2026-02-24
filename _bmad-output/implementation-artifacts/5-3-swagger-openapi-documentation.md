@@ -43,11 +43,11 @@ so that I can understand and integrate with Event Hub API without reading source
   - [x] 4.1 Add `/// <summary>Returns Azure SignalR Service connection info for client WebSocket connections.</summary>` + `/// <returns>SignalR negotiation response with endpoint URL and access token.</returns>` above the `[HttpPost]` `Negotiate` action
   - [x] 4.2 Add `[ProducesResponseType(typeof(object), StatusCodes.Status200OK)]` to the `Negotiate` action — documents the 200 response explicitly in Swagger UI
 
-- [ ] Task 5: Add XML documentation to Application DTOs (AC: #2, #3, #4)
-  - [ ] 5.1 In `src/EventHub.Application/DTOs/CreateEventRequest.cs`, add `/// <summary>` doc comments above the class and above each property: `UserId` ("Identifier of the user submitting the event. Max 100 characters."), `Type` ("Event type: PageView, Click, or Purchase."), `Description` ("Human-readable event description. Max 500 characters.")
-  - [ ] 5.2 In `src/EventHub.Application/DTOs/EventResponse.cs`, add class-level and property-level `/// <summary>` comments: `Id` ("Unique event identifier (GUID)."), `UserId`, `Type`, `Description`, `CreatedAt` ("UTC timestamp of event creation. ISO 8601 format.")
-  - [ ] 5.3 In `src/EventHub.Application/DTOs/EventFilter.cs`, add class-level `/// <summary>` and property docs for all 9 properties matching the query parameter names in Swagger
-  - [ ] 5.4 In `src/EventHub.Application/DTOs/PagedResult.cs`, add class-level and property docs: `Items`, `TotalCount`, `Page`, `PageSize`
+- [x] Task 5: Add XML documentation to Application DTOs (AC: #2, #3, #4)
+  - [x] 5.1 In `src/EventHub.Application/DTOs/CreateEventRequest.cs`, add `/// <summary>` doc comments above the class and above each property: `UserId` ("Identifier of the user submitting the event. Max 100 characters."), `Type` ("Event type: PageView, Click, or Purchase."), `Description` ("Human-readable event description. Max 500 characters.")
+  - [x] 5.2 In `src/EventHub.Application/DTOs/EventResponse.cs`, add class-level and property-level `/// <summary>` comments: `Id` ("Unique event identifier (GUID)."), `UserId`, `Type`, `Description`, `CreatedAt` ("UTC timestamp of event creation. ISO 8601 format.")
+  - [x] 5.3 In `src/EventHub.Application/DTOs/EventFilter.cs`, add class-level `/// <summary>` and property docs for all 9 properties matching the query parameter names in Swagger
+  - [x] 5.4 In `src/EventHub.Application/DTOs/PagedResult.cs`, add class-level and property docs: `Items`, `TotalCount`, `Page`, `PageSize`
 
 - [ ] Task 6: Unit tests — verify ProducesResponseType completeness (AC: #2, #3)
   - [ ] 6.1 In `tests/EventHub.Api.Tests/Controllers/EventsControllerTests.cs`, add a test using reflection: `Create_Action_HasProducesResponseType_201()` — verifies `[ProducesResponseType(201)]` attribute exists on the `Create` method
