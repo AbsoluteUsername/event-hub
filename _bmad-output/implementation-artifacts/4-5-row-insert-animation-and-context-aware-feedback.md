@@ -35,12 +35,12 @@ so that I always know a new event was created regardless of my filter and pagina
   - [x] 2.4 Add reducer `on()` handlers: `markNewEvent` sets `lastInsertedEventId`, `clearNewEvent` resets to `null`
   - [x] 2.5 Add selector `selectLastInsertedEventId` in `events.selectors.ts`
 
-- [ ] Task 3: Extend SignalR effects for context-aware feedback (AC: #1, #2, #3)
-  - [ ] 3.1 Refactor `eventReceived$` effect in `signalr.effects.ts` to handle all 3 context scenarios (page 1 match, page 1 hidden, page 2+)
-  - [ ] 3.2 **Page 1 + event matches filters (or no filters):** dispatch `markNewEvent({ eventId })` then `loadEvents()` — the re-fetched items will include the new row, identified by `lastInsertedEventId` for animation
-  - [ ] 3.3 **Page 1 + active filters that exclude event:** determine match by comparing `signalrEventReceived.event` fields against current `selectEventsFilters` values (type match, userId match, description contains, date range); if excluded → dispatch `loadEvents()` (totalCount updates) AND call `NotificationService.showInfo('New event added — hidden by current filters', 'Clear filters', () => store.dispatch(changeFilter({ filter: {} })))` — no `markNewEvent` dispatch (no row to animate)
-  - [ ] 3.4 **Page 2+:** do NOT dispatch `loadEvents()` — user stays on current page; dispatch a new action `updateTotalCount` to increment `totalCount` by 1 in the events reducer; call `NotificationService.showInfo('New event added', 'Go to page 1', () => store.dispatch(changePage({ page: 1 })))` — no `markNewEvent` dispatch
-  - [ ] 3.5 Add `updateTotalCount` action + reducer handler in events store: `on(updateTotalCount, (state) => ({ ...state, totalCount: state.totalCount + 1 }))`
+- [x] Task 3: Extend SignalR effects for context-aware feedback (AC: #1, #2, #3)
+  - [x] 3.1 Refactor `eventReceived$` effect in `signalr.effects.ts` to handle all 3 context scenarios (page 1 match, page 1 hidden, page 2+)
+  - [x] 3.2 **Page 1 + event matches filters (or no filters):** dispatch `markNewEvent({ eventId })` then `loadEvents()` — the re-fetched items will include the new row, identified by `lastInsertedEventId` for animation
+  - [x] 3.3 **Page 1 + active filters that exclude event:** determine match by comparing `signalrEventReceived.event` fields against current `selectEventsFilters` values (type match, userId match, description contains, date range); if excluded → dispatch `loadEvents()` (totalCount updates) AND call `NotificationService.showInfo('New event added — hidden by current filters', 'Clear filters', () => store.dispatch(changeFilter({ filter: {} })))` — no `markNewEvent` dispatch (no row to animate)
+  - [x] 3.4 **Page 2+:** do NOT dispatch `loadEvents()` — user stays on current page; dispatch a new action `updateTotalCount` to increment `totalCount` by 1 in the events reducer; call `NotificationService.showInfo('New event added', 'Go to page 1', () => store.dispatch(changePage({ page: 1 })))` — no `markNewEvent` dispatch
+  - [x] 3.5 Add `updateTotalCount` action + reducer handler in events store: `on(updateTotalCount, (state) => ({ ...state, totalCount: state.totalCount + 1 }))`
 
 - [ ] Task 4: Implement row insert animation in `EventsTableComponent` (AC: #1, #4)
   - [ ] 4.1 Inject `AnimationService` and `Store` into `EventsTableComponent`
