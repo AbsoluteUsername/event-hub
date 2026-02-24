@@ -82,7 +82,7 @@ development_status:
   epic-5: in-progress
   5-1-responsive-layout-3-breakpoints: review
   5-2-keyboard-navigation-and-focus-management: review
-  5-3-swagger-openapi-documentation: in-progress
+  5-3-swagger-openapi-documentation: review
   5-4-readme-and-architecture-documentation: backlog
   5-5-code-quality-and-linting-configuration: backlog
   epic-5-retrospective: optional

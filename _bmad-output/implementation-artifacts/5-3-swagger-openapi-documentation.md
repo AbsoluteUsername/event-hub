@@ -1,6 +1,6 @@
 # Story 5.3: Swagger/OpenAPI Documentation
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -458,12 +458,33 @@ claude-sonnet-4-6
 
 ### Debug Log References
 
+None.
+
 ### Completion Notes List
 
+- ✅ Task 1: Enabled XML documentation generation in EventHub.Api.csproj and EventHub.Application.csproj with NoWarn 1591 suppression. `dotnet build` = 0 errors, 0 warnings.
+- ✅ Task 2: Replaced bare `AddSwaggerGen()` in Program.cs with configured version including OpenApiInfo (title, version, description) and IncludeXmlComments for both Api and Application XML files. Added `using System.Reflection` and `using Microsoft.OpenApi.Models`.
+- ✅ Task 3: Added complete XML documentation (`<summary>`, `<param>`, `<returns>`, `<response>`) to both actions in EventsController. Added `[ProducesResponseType(500)]` to both Create and GetAll actions.
+- ✅ Task 4: Added XML documentation and `[ProducesResponseType(200)]` to NegotiateController.Negotiate action.
+- ✅ Task 5: Added class-level and property-level `/// <summary>` docs to all 4 Application DTOs: CreateEventRequest (3 properties), EventResponse (5 properties), EventFilter (9 properties), PagedResult (4 properties + typeparam).
+- ✅ Task 6: Added 5 reflection-based xUnit tests to EventsControllerTests.cs verifying [ProducesResponseType] attributes for Create (201, 400, 500) and GetAll (200, 500). All 28 API tests + 15 Function tests pass (43 total, 0 failures).
+
 ### File List
+
+- `src/EventHub.Api/EventHub.Api.csproj`
+- `src/EventHub.Application/EventHub.Application.csproj`
+- `src/EventHub.Api/Program.cs`
+- `src/EventHub.Api/Controllers/EventsController.cs`
+- `src/EventHub.Api/Controllers/NegotiateController.cs`
+- `src/EventHub.Application/DTOs/CreateEventRequest.cs`
+- `src/EventHub.Application/DTOs/EventResponse.cs`
+- `src/EventHub.Application/DTOs/EventFilter.cs`
+- `src/EventHub.Application/DTOs/PagedResult.cs`
+- `tests/EventHub.Api.Tests/Controllers/EventsControllerTests.cs`
 
 ## Change Log
 
 | Date | Change |
 |------|--------|
 | 2026-02-24 | Story 5.3 created — Swagger/OpenAPI Documentation (ready-for-dev) |
+| 2026-02-24 | Story 5.3 implemented — all 6 tasks complete, 5 new reflection-based tests added, 43/43 tests passing, status → review |
