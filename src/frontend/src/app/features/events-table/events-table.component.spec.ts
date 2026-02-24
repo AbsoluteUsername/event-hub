@@ -9,9 +9,11 @@ import {
   selectEventsPagination,
   selectEventsSort,
   selectEventsFilters,
+  selectLastInsertedEventId,
 } from '../../store/events/events.selectors';
-import { loadEvents, changeSort, changePage, changeFilter } from '../../store/events/events.actions';
+import { loadEvents, changeSort, changePage, changeFilter, clearNewEvent } from '../../store/events/events.actions';
 import { EventType } from '../../shared/models/event.model';
+import { AnimationService } from '../../core/services/animation.service';
 
 const mockEvents = [
   {
@@ -43,6 +45,11 @@ describe('EventsTableComponent', () => {
   let store: MockStore;
 
   beforeEach(async () => {
+    const animationServiceSpy = jasmine.createSpyObj('AnimationService', ['shouldAnimate'], {
+      prefersReducedMotion: { __zone_symbol__value: false },
+    });
+    animationServiceSpy.shouldAnimate.and.returnValue(true);
+
     await TestBed.configureTestingModule({
       imports: [EventsTableComponent, NoopAnimationsModule],
       providers: [
@@ -54,8 +61,10 @@ describe('EventsTableComponent', () => {
             { selector: selectEventsPagination, value: { page: 1, pageSize: 20 } },
             { selector: selectEventsSort, value: { sortBy: 'createdAt', sortDir: 'desc' } },
             { selector: selectEventsFilters, value: {} },
+            { selector: selectLastInsertedEventId, value: null },
           ],
         }),
+        { provide: AnimationService, useValue: animationServiceSpy },
       ],
     }).compileComponents();
 
@@ -204,6 +213,63 @@ describe('EventsTableComponent', () => {
     it('should dispatch changeFilter with empty filter object when onClearFilters is called', () => {
       component.onClearFilters();
       expect(store.dispatch).toHaveBeenCalledWith(changeFilter({ filter: {} }));
+    });
+  });
+
+  // New row animation tests (Story 4.5)
+  describe('trackById', () => {
+    it('should return item.id', () => {
+      const result = component.trackById(0, mockEvents[0]);
+      expect(result).toBe('550e8400-e29b-41d4-a716-446655440000');
+    });
+  });
+
+  describe('New row class binding', () => {
+    it('should apply .new-row class when lastInsertedEventId matches a row', () => {
+      store.overrideSelector(selectLastInsertedEventId, '550e8400-e29b-41d4-a716-446655440000');
+      store.refreshState();
+      fixture.detectChanges();
+
+      const rows = fixture.nativeElement.querySelectorAll('.mat-mdc-row');
+      const firstRow = rows[0];
+      expect(firstRow.classList.contains('new-row')).toBe(true);
+    });
+
+    it('should NOT apply .new-row class when lastInsertedEventId is null', () => {
+      store.overrideSelector(selectLastInsertedEventId, null);
+      store.refreshState();
+      fixture.detectChanges();
+
+      const rows = fixture.nativeElement.querySelectorAll('.mat-mdc-row');
+      const hasNewRow = Array.from(rows as NodeListOf<Element>).some(r => r.classList.contains('new-row'));
+      expect(hasNewRow).toBe(false);
+    });
+
+    it('should NOT apply .new-row class when lastInsertedEventId does not match any row', () => {
+      store.overrideSelector(selectLastInsertedEventId, 'non-existent-id');
+      store.refreshState();
+      fixture.detectChanges();
+
+      const rows = fixture.nativeElement.querySelectorAll('.mat-mdc-row');
+      const hasNewRow = Array.from(rows as NodeListOf<Element>).some(r => r.classList.contains('new-row'));
+      expect(hasNewRow).toBe(false);
+    });
+  });
+
+  describe('Reduced motion', () => {
+    it('should not trigger Web Animations API when shouldAnimate returns false', () => {
+      const animationService = TestBed.inject(AnimationService) as jasmine.SpyObj<AnimationService>;
+      animationService.shouldAnimate.and.returnValue(false);
+
+      store.overrideSelector(selectLastInsertedEventId, '550e8400-e29b-41d4-a716-446655440000');
+      store.refreshState();
+      fixture.detectChanges();
+
+      const row = fixture.nativeElement.querySelector('.new-row') as HTMLElement;
+      expect(row).toBeTruthy();
+      // In reduced motion, the row gets a static background instead of Web Animations
+      // The animateNewRow method sets style.background directly
+      expect(row.style.background).toBe('rgba(124, 58, 237, 0.12)');
     });
   });
 });

@@ -55,13 +55,13 @@ so that I always know a new event was created regardless of my filter and pagina
 - [x] Task 5: Fix FlyingChip DOM target query (pre-existing bug from Story 4.4) (AC: #1)
   - [x] 5.1 In `app.component.html`, add `class="events-table"` to `<app-events-table>` element: `<app-events-table class="events-table"></app-events-table>` — this fixes the `document.querySelector('.events-table mat-header-row')` query in `EventFormComponent.launchFlyingChip()` which currently returns `null` (falling back to center-screen position)
 
-- [ ] Task 6: Unit tests (AC: #1, #2, #3, #4)
-  - [ ] 6.1 Create/extend `notification.service.spec.ts` — test `showInfo()` calls `MatSnackBar.open()` with correct parameters, verify `onAction()` callback fires
-  - [ ] 6.2 Extend `events.reducer.spec.ts` — test `markNewEvent` sets `lastInsertedEventId`, `clearNewEvent` resets to null, `updateTotalCount` increments totalCount
-  - [ ] 6.3 Extend `signalr.effects.spec.ts` — test 3 context scenarios: page 1 matching (dispatches markNewEvent + loadEvents), page 1 excluded (dispatches loadEvents + calls showInfo), page 2+ (dispatches updateTotalCount + calls showInfo, does NOT dispatch loadEvents)
-  - [ ] 6.4 Extend `events-table.component.spec.ts` — test `.new-row` class is applied when `lastInsertedEventId` matches a row, verify `role="status"` attributes
-  - [ ] 6.5 Test reduced-motion path: verify no animation triggers when `AnimationService.shouldAnimate()` returns false
-  - [ ] 6.6 Verify `ng build` succeeds with zero errors
+- [x] Task 6: Unit tests (AC: #1, #2, #3, #4)
+  - [x] 6.1 Create/extend `notification.service.spec.ts` — test `showInfo()` calls `MatSnackBar.open()` with correct parameters, verify `onAction()` callback fires
+  - [x] 6.2 Extend `events.reducer.spec.ts` — test `markNewEvent` sets `lastInsertedEventId`, `clearNewEvent` resets to null, `updateTotalCount` increments totalCount
+  - [x] 6.3 Extend `signalr.effects.spec.ts` — test 3 context scenarios: page 1 matching (dispatches markNewEvent + loadEvents), page 1 excluded (dispatches loadEvents + calls showInfo), page 2+ (dispatches updateTotalCount + calls showInfo, does NOT dispatch loadEvents)
+  - [x] 6.4 Extend `events-table.component.spec.ts` — test `.new-row` class is applied when `lastInsertedEventId` matches a row, verify `role="status"` attributes
+  - [x] 6.5 Test reduced-motion path: verify no animation triggers when `AnimationService.shouldAnimate()` returns false
+  - [x] 6.6 Verify `ng build` succeeds with zero errors
 
 ## Dev Notes
 
