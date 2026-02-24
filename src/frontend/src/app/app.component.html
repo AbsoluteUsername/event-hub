@@ -8,7 +8,7 @@
       <app-event-form></app-event-form>
     </aside>
     <div class="table-panel">
-      <app-events-filter></app-events-filter>
+      <app-events-filter [collapsed]="!isDesktop()"></app-events-filter>
       <app-events-table class="events-table"></app-events-table>
     </div>
   </div>

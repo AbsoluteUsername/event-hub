@@ -2,7 +2,13 @@
   @if (mode() === 'no-data') {
     <mat-icon class="empty-state__icon" fontIcon="outbox"></mat-icon>
     <h3 class="empty-state__title">No events yet</h3>
-    <p class="empty-state__subtitle">Submit your first event using the form on the left.</p>
+    <p class="empty-state__subtitle">
+      @if (layout() === 'stacked') {
+        Submit your first event using the form above.
+      } @else {
+        Submit your first event using the form on the left.
+      }
+    </p>
   } @else {
     <mat-icon class="empty-state__icon" fontIcon="search_off"></mat-icon>
     <h3 class="empty-state__title">No events match your filters</h3>

@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { DOCUMENT, AsyncPipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -72,6 +73,7 @@ export class EventFormComponent implements OnInit, AfterViewInit {
   private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly ngZone = inject(NgZone);
   private readonly document = inject(DOCUMENT);
+  private readonly breakpointObserver = inject(BreakpointObserver);
 
   @ViewChild('userIdInput') userIdInput!: ElementRef<HTMLInputElement>;
   @ViewChild('submitButton', { read: ElementRef }) submitButtonRef!: ElementRef<HTMLElement>;
@@ -154,6 +156,12 @@ export class EventFormComponent implements OnInit, AfterViewInit {
   }
 
   private launchFlyingChip(event: EventResponse): void {
+    // Skip chip on mobile — dispatch chipLanded directly
+    if (this.breakpointObserver.isMatched('(max-width: 767.98px)')) {
+      this.ngZone.run(() => this.store.dispatch(chipLanded()));
+      return;
+    }
+
     const chipRef = this.viewContainerRef.createComponent(FlyingChipComponent);
     chipRef.instance.eventType = event.type;
     chipRef.instance.userId = event.userId;

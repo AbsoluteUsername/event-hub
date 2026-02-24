@@ -2,16 +2,14 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding: 32px;
-  max-width: 1280px;
-  margin: 0 auto;
+  padding: 16px;
 }
 
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .app-title {
@@ -27,15 +25,55 @@
 
 .content-layout {
   display: flex;
-  gap: 24px;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .form-panel {
-  width: 380px;
+  width: 100%;
   flex-shrink: 0;
 }
 
 .table-panel {
   flex: 1;
   min-width: 0;
+}
+
+// Tablet: compressed side-by-side
+@media (min-width: 768px) {
+  :host {
+    padding: 24px;
+  }
+
+  .app-header {
+    margin-bottom: 24px;
+  }
+
+  .content-layout {
+    flex-direction: row;
+    gap: 24px;
+  }
+
+  .form-panel {
+    width: 260px;
+  }
+}
+
+// Desktop: full side-by-side
+@media (min-width: 1024px) {
+  :host {
+    padding: 32px;
+  }
+
+  .form-panel {
+    width: 380px;
+  }
+}
+
+// Wide: centered container
+@media (min-width: 1280px) {
+  :host {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
 }

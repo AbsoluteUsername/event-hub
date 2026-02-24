@@ -3,11 +3,34 @@
   margin-bottom: 16px;
 }
 
+.filter-toggle-bar {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.filter-toggle-btn {
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  mat-icon {
+    font-size: 18px;
+  }
+}
+
+.filter-toggle-label {
+  margin-left: 4px;
+}
+
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
+  transition: opacity 0.2s ease;
 }
 
 .filter-field {

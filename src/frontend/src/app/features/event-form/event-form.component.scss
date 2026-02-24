@@ -40,3 +40,9 @@ mat-form-field {
     cursor: not-allowed;
   }
 }
+
+@media (max-width: 767.98px) {
+  .submit-button {
+    width: 100%;
+  }
+}

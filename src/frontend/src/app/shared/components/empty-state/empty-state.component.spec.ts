@@ -41,9 +41,23 @@ describe('EmptyStateComponent', () => {
       expect(title.textContent.trim()).toBe('No events yet');
     });
 
-    it('should render subtitle text', () => {
+    it('should render subtitle text with side-by-side layout (default)', () => {
       const subtitle = fixture.nativeElement.querySelector('.empty-state__subtitle');
-      expect(subtitle.textContent.trim()).toBe('Submit your first event using the form on the left.');
+      expect(subtitle.textContent).toContain('Submit your first event using the form on the left.');
+    });
+
+    it('should render "form above" subtitle when layout is stacked', () => {
+      fixture.componentRef.setInput('layout', 'stacked');
+      fixture.detectChanges();
+      const subtitle = fixture.nativeElement.querySelector('.empty-state__subtitle');
+      expect(subtitle.textContent).toContain('Submit your first event using the form above.');
+    });
+
+    it('should render "form on the left" subtitle when layout is side-by-side', () => {
+      fixture.componentRef.setInput('layout', 'side-by-side');
+      fixture.detectChanges();
+      const subtitle = fixture.nativeElement.querySelector('.empty-state__subtitle');
+      expect(subtitle.textContent).toContain('Submit your first event using the form on the left.');
     });
 
     it('should NOT render "Clear all filters" button', () => {
