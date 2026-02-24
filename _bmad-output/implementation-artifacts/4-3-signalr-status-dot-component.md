@@ -1,6 +1,6 @@
 # Story 4.3: SignalR Status Dot Component
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -22,25 +22,25 @@ so that I know whether live updates are active.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Create `SignalRStatusDotComponent` in `shared/components/signalr-status-dot/` (AC: #1, #2, #3, #4)
-  - [ ] 1.1 Create `signalr-status-dot.component.ts` as standalone component with `@Input() status: 'connected' | 'reconnecting' | 'disconnected'`
-  - [ ] 1.2 Create inline or separate template with 8px colored circle, text label, `role="status"`, `aria-live="polite"`, and `matTooltip`
-  - [ ] 1.3 Create `signalr-status-dot.component.scss` with color states, glow `box-shadow`, and pulsing CSS `@keyframes` animation for reconnecting state
-  - [ ] 1.4 Add `prefers-reduced-motion` fallback — disable pulsing animation when reduced motion is preferred
+- [x] Task 1: Create `SignalRStatusDotComponent` in `shared/components/signalr-status-dot/` (AC: #1, #2, #3, #4)
+  - [x] 1.1 Create `signalr-status-dot.component.ts` as standalone component with `@Input() status: 'connected' | 'reconnecting' | 'disconnected'`
+  - [x] 1.2 Create inline or separate template with 8px colored circle, text label, `role="status"`, `aria-live="polite"`, and `matTooltip`
+  - [x] 1.3 Create `signalr-status-dot.component.scss` with color states, glow `box-shadow`, and pulsing CSS `@keyframes` animation for reconnecting state
+  - [x] 1.4 Add `prefers-reduced-motion` fallback — disable pulsing animation when reduced motion is preferred
 
-- [ ] Task 2: Integrate component into AppComponent (AC: #1, #2, #3)
-  - [ ] 2.1 Import `SignalRStatusDotComponent` in `app.component.ts`
-  - [ ] 2.2 Inject NgRx `Store` and create `connectionStatus$` observable from `selectConnectionStatus` selector
-  - [ ] 2.3 Replace `<span class="signalr-placeholder">` in `app.component.html` with `<app-signalr-status-dot [status]="connectionStatus$ | async">` (using `AsyncPipe`)
+- [x] Task 2: Integrate component into AppComponent (AC: #1, #2, #3)
+  - [x] 2.1 Import `SignalRStatusDotComponent` in `app.component.ts`
+  - [x] 2.2 Inject NgRx `Store` and create `connectionStatus$` observable from `selectConnectionStatus` selector
+  - [x] 2.3 Replace `<span class="signalr-placeholder">` in `app.component.html` with `<app-signalr-status-dot [status]="connectionStatus$ | async">` (using `AsyncPipe`)
 
-- [ ] Task 3: Unit tests (AC: #1, #2, #3, #4)
-  - [ ] 3.1 Create `signalr-status-dot.component.spec.ts`
-  - [ ] 3.2 Test: renders green dot with "Connected" label when status is 'connected'
-  - [ ] 3.3 Test: renders amber dot with "Reconnecting..." label when status is 'reconnecting'
-  - [ ] 3.4 Test: renders grey dot with "Disconnected" label when status is 'disconnected'
-  - [ ] 3.5 Test: has `role="status"` and `aria-live="polite"` attributes
-  - [ ] 3.6 Test: `matTooltip` is present with correct tooltip text per state
-  - [ ] 3.7 Verify `ng build` succeeds with zero errors
+- [x] Task 3: Unit tests (AC: #1, #2, #3, #4)
+  - [x] 3.1 Create `signalr-status-dot.component.spec.ts`
+  - [x] 3.2 Test: renders green dot with "Connected" label when status is 'connected'
+  - [x] 3.3 Test: renders amber dot with "Reconnecting..." label when status is 'reconnecting'
+  - [x] 3.4 Test: renders grey dot with "Disconnected" label when status is 'disconnected'
+  - [x] 3.5 Test: has `role="status"` and `aria-live="polite"` attributes
+  - [x] 3.6 Test: `matTooltip` is present with correct tooltip text per state
+  - [x] 3.7 Verify `ng build` succeeds with zero errors
 
 ## Dev Notes
 
@@ -247,9 +247,15 @@ No new packages need to be installed.
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Opus 4.6
 
 ### Debug Log References
+
+- Initial test run: 3 failures (ng-reflect-message truncation for long tooltip strings, removed placeholder test in AppComponent)
+- Fixed tooltip tests to use component getter instead of DOM ng-reflect-message attribute
+- Updated AppComponent spec to test for `app-signalr-status-dot` element instead of removed `.signalr-placeholder` span
+- Added `selectConnectionStatus` mock to AppComponent test's `provideMockStore`
+- Second test run: 164/164 SUCCESS, ng build: SUCCESS
 
 ### Completion Notes List
 
@@ -260,5 +266,25 @@ No new packages need to be installed.
 - AppComponent modification coordinates with Story 4.2 changes (both modify app.component.ts)
 - Story 4.4 (Flying Chip Animation) and 4.5 (Row Insert Animation) are independent of this component
 - CSS custom properties for all 3 status colors already exist in _variables.scss
+- Implementation follows presentational component pattern matching EventTypeChipComponent
+- All 3 status states implemented: connected (green dot + glow), reconnecting (amber dot + pulse animation), disconnected (grey dot, no glow)
+- Accessibility: host has role="status" + aria-live="polite", matTooltip on status indicator
+- prefers-reduced-motion fallback disables pulse animation
+- 12 new tests added covering all states, accessibility, tooltip text, and reactive input changes
+- AppComponent updated: Store injected, connectionStatus$ observable from selectConnectionStatus, AsyncPipe with ?? 'disconnected' fallback
+- Existing AppComponent test updated for new SignalR status dot element
+- All 164 tests pass, ng build succeeds
 
 ### File List
+
+- `src/frontend/src/app/shared/components/signalr-status-dot/signalr-status-dot.component.ts` (created)
+- `src/frontend/src/app/shared/components/signalr-status-dot/signalr-status-dot.component.html` (created)
+- `src/frontend/src/app/shared/components/signalr-status-dot/signalr-status-dot.component.scss` (created)
+- `src/frontend/src/app/shared/components/signalr-status-dot/signalr-status-dot.component.spec.ts` (created)
+- `src/frontend/src/app/app.component.ts` (modified)
+- `src/frontend/src/app/app.component.html` (modified)
+- `src/frontend/src/app/app.component.spec.ts` (modified)
+
+## Change Log
+
+- 2026-02-24: Created SignalRStatusDotComponent — standalone presentational component with 3 connection states (connected/reconnecting/disconnected), CSS glow animations, prefers-reduced-motion fallback, matTooltip, and WCAG 2.1 AA accessibility (role="status", aria-live="polite"). Integrated into AppComponent header replacing placeholder span. Added 12 unit tests. All 164 tests pass.

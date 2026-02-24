@@ -1,6 +1,6 @@
 <header class="app-header">
   <h1 class="app-title">Event Hub</h1>
-  <span class="signalr-placeholder"><!-- SignalR status dot placeholder --></span>
+  <app-signalr-status-dot [status]="(connectionStatus$ | async) ?? 'disconnected'"></app-signalr-status-dot>
 </header>
 <main class="app-main">
   <div class="content-layout">
