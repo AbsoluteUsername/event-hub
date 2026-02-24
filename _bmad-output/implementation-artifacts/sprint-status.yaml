@@ -66,11 +66,11 @@ development_status:
   3-3-events-table-component: review
   3-4-event-type-chip-component: review
   3-5-events-filter-bar-and-reactive-filtering: review
-  3-6-loading-and-empty-states: backlog
+  3-6-loading-and-empty-states: review
   epic-3-retrospective: optional
 
   # Epic 4: Real-Time Updates & Live Experience
-  epic-4: backlog
+  epic-4: in-progress
   4-1-azure-function-signalr-output-binding-and-negotiate-endpoint: backlog
   4-2-angular-signalr-service-and-ngrx-integration: backlog
   4-3-signalr-status-dot-component: backlog

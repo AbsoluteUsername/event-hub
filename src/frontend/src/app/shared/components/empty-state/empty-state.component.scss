@@ -1,0 +1,46 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.empty-state__icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.empty-state__title {
+  font-size: var(--text-md);
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+
+.empty-state__subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.empty-state__clear-btn {
+  margin-top: 16px;
+  color: var(--accent);
+  font-size: var(--text-sm);
+
+  mat-icon {
+    font-size: 18px;
+    margin-right: 4px;
+  }
+}

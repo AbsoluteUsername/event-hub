@@ -8,8 +8,9 @@ import {
   selectEventsLoading,
   selectEventsPagination,
   selectEventsSort,
+  selectEventsFilters,
 } from '../../store/events/events.selectors';
-import { loadEvents, changeSort, changePage } from '../../store/events/events.actions';
+import { loadEvents, changeSort, changePage, changeFilter } from '../../store/events/events.actions';
 import { EventType } from '../../shared/models/event.model';
 
 const mockEvents = [
@@ -52,6 +53,7 @@ describe('EventsTableComponent', () => {
             { selector: selectEventsLoading, value: false },
             { selector: selectEventsPagination, value: { page: 1, pageSize: 20 } },
             { selector: selectEventsSort, value: { sortBy: 'createdAt', sortDir: 'desc' } },
+            { selector: selectEventsFilters, value: {} },
           ],
         }),
       ],
@@ -132,5 +134,76 @@ describe('EventsTableComponent', () => {
     expect(paginator).toBeTruthy();
     const rangeLabel = paginator.querySelector('.mat-mdc-paginator-range-label');
     expect(rangeLabel.textContent).toContain('3');
+  });
+
+  // Loading indicator tests (AC: #1)
+  describe('Loading indicator', () => {
+    it('should show mat-progress-bar when loading is true', () => {
+      store.overrideSelector(selectEventsLoading, true);
+      store.refreshState();
+      fixture.detectChanges();
+
+      const progressBar = fixture.nativeElement.querySelector('mat-progress-bar');
+      expect(progressBar).toBeTruthy();
+    });
+
+    it('should NOT show mat-progress-bar when loading is false', () => {
+      store.overrideSelector(selectEventsLoading, false);
+      store.refreshState();
+      fixture.detectChanges();
+
+      const progressBar = fixture.nativeElement.querySelector('mat-progress-bar');
+      expect(progressBar).toBeNull();
+    });
+  });
+
+  // Empty state tests (AC: #2, #3)
+  describe('Empty states', () => {
+    it('should show EmptyStateComponent in no-data mode when loading is false, items empty, and no filters active', () => {
+      store.overrideSelector(selectEventsLoading, false);
+      store.overrideSelector(selectEvents, []);
+      store.overrideSelector(selectEventsTotalCount, 0);
+      store.overrideSelector(selectEventsFilters, {});
+      store.refreshState();
+      fixture.detectChanges();
+
+      const emptyState = fixture.nativeElement.querySelector('app-empty-state');
+      expect(emptyState).toBeTruthy();
+      expect(emptyState.textContent).toContain('No events yet');
+    });
+
+    it('should show EmptyStateComponent in no-results mode when loading is false, items empty, and filters active', () => {
+      store.overrideSelector(selectEventsLoading, false);
+      store.overrideSelector(selectEvents, []);
+      store.overrideSelector(selectEventsTotalCount, 0);
+      store.overrideSelector(selectEventsFilters, { type: EventType.Click });
+      store.refreshState();
+      fixture.detectChanges();
+
+      const emptyState = fixture.nativeElement.querySelector('app-empty-state');
+      expect(emptyState).toBeTruthy();
+      expect(emptyState.textContent).toContain('No events match your filters');
+    });
+
+    it('should show table with rows when loading is false and items has data', () => {
+      store.overrideSelector(selectEventsLoading, false);
+      store.overrideSelector(selectEvents, mockEvents);
+      store.refreshState();
+      fixture.detectChanges();
+
+      const rows = fixture.nativeElement.querySelectorAll('.mat-mdc-row');
+      expect(rows.length).toBe(mockEvents.length);
+
+      const emptyState = fixture.nativeElement.querySelector('app-empty-state');
+      expect(emptyState).toBeNull();
+    });
+  });
+
+  // Clear filters test (AC: #3)
+  describe('Clear filters', () => {
+    it('should dispatch changeFilter with empty filter object when onClearFilters is called', () => {
+      component.onClearFilters();
+      expect(store.dispatch).toHaveBeenCalledWith(changeFilter({ filter: {} }));
+    });
   });
 });

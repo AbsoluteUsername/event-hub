@@ -9,6 +9,25 @@
   margin: 0 0 16px 0;
 }
 
+.table-container {
+  position: relative;
+}
+
+.table-loading-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+
+  ::ng-deep .mdc-linear-progress__bar-inner {
+    border-color: var(--accent);
+  }
+  ::ng-deep .mdc-linear-progress__buffer-bar {
+    background-color: rgba(124, 58, 237, 0.1);
+  }
+}
+
 .table-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
