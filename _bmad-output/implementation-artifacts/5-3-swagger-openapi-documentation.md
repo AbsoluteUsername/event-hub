@@ -39,9 +39,9 @@ so that I can understand and integrate with Event Hub API without reading source
   - [x] 3.3 Replace the existing partial `/// <summary>` block on the `GetAll` action with a complete XML doc: `/// <summary>Retrieves a paginated, filtered, and sorted list of events.</summary>` + `/// <param name="filter">Query parameters: type, userId, description, from, to, page, pageSize, sortBy, sortDir.</param>` + `/// <returns>Paged result with items, totalCount, page, and pageSize.</returns>`
   - [x] 3.4 Add `[ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]` to the `GetAll` action
 
-- [ ] Task 4: Add XML documentation to `NegotiateController` (AC: #1, #4)
-  - [ ] 4.1 Add `/// <summary>Returns Azure SignalR Service connection info for client WebSocket connections.</summary>` + `/// <returns>SignalR negotiation response with endpoint URL and access token.</returns>` above the `[HttpPost]` `Negotiate` action
-  - [ ] 4.2 Add `[ProducesResponseType(typeof(object), StatusCodes.Status200OK)]` to the `Negotiate` action — documents the 200 response explicitly in Swagger UI
+- [x] Task 4: Add XML documentation to `NegotiateController` (AC: #1, #4)
+  - [x] 4.1 Add `/// <summary>Returns Azure SignalR Service connection info for client WebSocket connections.</summary>` + `/// <returns>SignalR negotiation response with endpoint URL and access token.</returns>` above the `[HttpPost]` `Negotiate` action
+  - [x] 4.2 Add `[ProducesResponseType(typeof(object), StatusCodes.Status200OK)]` to the `Negotiate` action — documents the 200 response explicitly in Swagger UI
 
 - [ ] Task 5: Add XML documentation to Application DTOs (AC: #2, #3, #4)
   - [ ] 5.1 In `src/EventHub.Application/DTOs/CreateEventRequest.cs`, add `/// <summary>` doc comments above the class and above each property: `UserId` ("Identifier of the user submitting the event. Max 100 characters."), `Type` ("Event type: PageView, Click, or Purchase."), `Description` ("Human-readable event description. Max 500 characters.")
