@@ -80,7 +80,7 @@ development_status:
 
   # Epic 5: UI Polish, Accessibility & Developer Documentation
   epic-5: in-progress
-  5-1-responsive-layout-3-breakpoints: in-progress
+  5-1-responsive-layout-3-breakpoints: review
   5-2-keyboard-navigation-and-focus-management: backlog
   5-3-swagger-openapi-documentation: backlog
   5-4-readme-and-architecture-documentation: backlog
