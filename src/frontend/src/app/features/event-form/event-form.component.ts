@@ -134,6 +134,10 @@ export class EventFormComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
+    if (this.submitButtonRef?.nativeElement?.getAttribute('aria-disabled') === 'true') {
+      return;
+    }
+
     if (this.eventForm.invalid) {
       this.eventForm.markAllAsTouched();
       return;

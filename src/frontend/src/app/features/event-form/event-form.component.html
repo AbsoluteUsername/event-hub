@@ -50,7 +50,7 @@
             type="submit"
             class="submit-button"
             #submitButton
-            [disabled]="isSubmitDisabled$ | async"
+            [attr.aria-disabled]="(isSubmitDisabled$ | async) ? 'true' : null"
             [attr.aria-busy]="(isSubmitDisabled$ | async) ? 'true' : null"
             aria-label="Submit event">
       Submit Event

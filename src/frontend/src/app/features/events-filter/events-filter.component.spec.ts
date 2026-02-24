@@ -203,4 +203,44 @@ describe('EventsFilterComponent', () => {
       })
     );
   });
+
+  describe('Date range Escape key handler', () => {
+    it('should clear date range form controls when clearDateRange() is called', () => {
+      component.filterForm.controls.dateFrom.setValue(new Date('2026-01-01'));
+      component.filterForm.controls.dateTo.setValue(new Date('2026-12-31'));
+
+      component.clearDateRange();
+
+      expect(component.filterForm.controls.dateFrom.value).toBeNull();
+      expect(component.filterForm.controls.dateTo.value).toBeNull();
+    });
+
+    it('should dispatch changeFilter with empty from/to when clearDateRange() is called', () => {
+      (store.dispatch as jasmine.Spy).calls.reset();
+
+      component.clearDateRange();
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        changeFilter({ filter: { from: undefined, to: undefined } })
+      );
+    });
+
+    it('should call clearDateRange() when Escape pressed on From date input', () => {
+      spyOn(component, 'clearDateRange');
+      const fromInput = fixture.nativeElement.querySelector('input[placeholder="From"]');
+      fromInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      fixture.detectChanges();
+
+      expect(component.clearDateRange).toHaveBeenCalled();
+    });
+
+    it('should call clearDateRange() when Escape pressed on To date input', () => {
+      spyOn(component, 'clearDateRange');
+      const toInput = fixture.nativeElement.querySelector('input[placeholder="To"]');
+      toInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      fixture.detectChanges();
+
+      expect(component.clearDateRange).toHaveBeenCalled();
+    });
+  });
 });

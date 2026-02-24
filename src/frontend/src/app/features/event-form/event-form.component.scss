@@ -34,6 +34,13 @@ mat-form-field {
     box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
   }
 
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
   &:disabled {
     opacity: 0.5;
     box-shadow: none;

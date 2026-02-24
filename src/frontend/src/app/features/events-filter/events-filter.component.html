@@ -48,9 +48,11 @@
         <mat-label>Date range</mat-label>
         <mat-date-range-input [rangePicker]="picker">
           <input matStartDate [formControl]="filterForm.controls.dateFrom"
-                 placeholder="From" aria-label="Filter from date">
+                 placeholder="From" aria-label="Filter from date"
+                 (keydown.escape)="clearDateRange()">
           <input matEndDate [formControl]="filterForm.controls.dateTo"
-                 placeholder="To" aria-label="Filter to date">
+                 placeholder="To" aria-label="Filter to date"
+                 (keydown.escape)="clearDateRange()">
         </mat-date-range-input>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
