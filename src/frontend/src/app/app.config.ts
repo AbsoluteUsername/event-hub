@@ -9,6 +9,7 @@ import { submissionReducer } from './store/submission/submission.reducer';
 import { signalrReducer } from './store/signalr/signalr.reducer';
 import { SubmissionEffects } from './store/submission/submission.effects';
 import { EventsEffects } from './store/events/events.effects';
+import { SignalrEffects } from './store/signalr/signalr.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +19,7 @@ export const appConfig: ApplicationConfig = {
       submission: submissionReducer,
       signalr: signalrReducer,
     }),
-    provideEffects(SubmissionEffects, EventsEffects),
+    provideEffects(SubmissionEffects, EventsEffects, SignalrEffects),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),
     provideHttpClient(withInterceptors([])),
     provideAnimationsAsync(),
