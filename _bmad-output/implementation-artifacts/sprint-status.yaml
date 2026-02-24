@@ -71,7 +71,7 @@ development_status:
 
   # Epic 4: Real-Time Updates & Live Experience
   epic-4: in-progress
-  4-1-azure-function-signalr-output-binding-and-negotiate-endpoint: backlog
+  4-1-azure-function-signalr-output-binding-and-negotiate-endpoint: review
   4-2-angular-signalr-service-and-ngrx-integration: backlog
   4-3-signalr-status-dot-component: backlog
   4-4-flying-chip-animation: backlog

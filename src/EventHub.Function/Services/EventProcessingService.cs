@@ -17,7 +17,7 @@ public class EventProcessingService
         _logger = logger;
     }
 
-    public virtual async Task ProcessAsync(EventMessage message)
+    public virtual async Task<Event?> ProcessAsync(EventMessage message)
     {
         var entity = new Event
         {
@@ -32,10 +32,12 @@ public class EventProcessingService
         {
             await _repository.CreateAsync(entity);
             _logger.LogInformation("Event {EventId} processed successfully", message.Id);
+            return entity;
         }
         catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
         {
             _logger.LogWarning("Duplicate event {EventId} ignored", message.Id);
+            return null;
         }
     }
 

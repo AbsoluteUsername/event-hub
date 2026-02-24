@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.SignalR.Management;
 
 namespace EventHub.Api.Controllers;
 
@@ -6,10 +7,19 @@ namespace EventHub.Api.Controllers;
 [Route("api/negotiate")]
 public class NegotiateController : ControllerBase
 {
-    [HttpPost]
-    public async Task<IActionResult> Negotiate()
+    private readonly ServiceManager _serviceManager;
+
+    public NegotiateController(ServiceManager serviceManager)
     {
-        await Task.CompletedTask;
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        _serviceManager = serviceManager;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Negotiate(CancellationToken cancellationToken)
+    {
+        var hubContext = await _serviceManager.CreateHubContextAsync("eventHub", cancellationToken);
+        var negotiationResponse = await hubContext.NegotiateAsync(new NegotiationOptions(), cancellationToken);
+        await hubContext.DisposeAsync();
+        return Ok(negotiationResponse);
     }
 }
