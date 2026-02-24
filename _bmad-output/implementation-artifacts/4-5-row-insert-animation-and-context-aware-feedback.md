@@ -52,8 +52,8 @@ so that I always know a new event was created regardless of my filter and pagina
   - [x] 4.7 **Reduced-motion fallback:** If `!animationService.shouldAnimate()`: skip unfold animation (row appears instantly); apply static violet tint `background: rgba(124,58,237,0.12)` for 1s; remove tint instantly (no fade); dispatch `clearNewEvent()`
   - [x] 4.8 After animation or reduced-motion cycle completes, dispatch `clearNewEvent()` to clean up store state
 
-- [ ] Task 5: Fix FlyingChip DOM target query (pre-existing bug from Story 4.4) (AC: #1)
-  - [ ] 5.1 In `app.component.html`, add `class="events-table"` to `<app-events-table>` element: `<app-events-table class="events-table"></app-events-table>` — this fixes the `document.querySelector('.events-table mat-header-row')` query in `EventFormComponent.launchFlyingChip()` which currently returns `null` (falling back to center-screen position)
+- [x] Task 5: Fix FlyingChip DOM target query (pre-existing bug from Story 4.4) (AC: #1)
+  - [x] 5.1 In `app.component.html`, add `class="events-table"` to `<app-events-table>` element: `<app-events-table class="events-table"></app-events-table>` — this fixes the `document.querySelector('.events-table mat-header-row')` query in `EventFormComponent.launchFlyingChip()` which currently returns `null` (falling back to center-screen position)
 
 - [ ] Task 6: Unit tests (AC: #1, #2, #3, #4)
   - [ ] 6.1 Create/extend `notification.service.spec.ts` — test `showInfo()` calls `MatSnackBar.open()` with correct parameters, verify `onAction()` callback fires
