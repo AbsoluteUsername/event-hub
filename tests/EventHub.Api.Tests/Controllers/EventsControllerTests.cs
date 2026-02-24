@@ -1,3 +1,4 @@
+using System.Reflection;
 using EventHub.Api.Controllers;
 using EventHub.Application.DTOs;
 using EventHub.Application.Interfaces;
@@ -283,5 +284,50 @@ public class EventsControllerTests
         Assert.Equal(0, response.TotalCount);
         Assert.Equal(1, response.Page);
         Assert.Equal(20, response.PageSize);
+    }
+
+    [Fact]
+    public void Create_Action_HasProducesResponseType_201()
+    {
+        var method = typeof(EventsController).GetMethod(nameof(EventsController.Create));
+        var attr = method!.GetCustomAttributes<ProducesResponseTypeAttribute>()
+            .FirstOrDefault(a => a.StatusCode == StatusCodes.Status201Created);
+        Assert.NotNull(attr);
+    }
+
+    [Fact]
+    public void Create_Action_HasProducesResponseType_400()
+    {
+        var method = typeof(EventsController).GetMethod(nameof(EventsController.Create));
+        var attr = method!.GetCustomAttributes<ProducesResponseTypeAttribute>()
+            .FirstOrDefault(a => a.StatusCode == StatusCodes.Status400BadRequest);
+        Assert.NotNull(attr);
+    }
+
+    [Fact]
+    public void Create_Action_HasProducesResponseType_500()
+    {
+        var method = typeof(EventsController).GetMethod(nameof(EventsController.Create));
+        var attr = method!.GetCustomAttributes<ProducesResponseTypeAttribute>()
+            .FirstOrDefault(a => a.StatusCode == StatusCodes.Status500InternalServerError);
+        Assert.NotNull(attr);
+    }
+
+    [Fact]
+    public void GetAll_Action_HasProducesResponseType_200()
+    {
+        var method = typeof(EventsController).GetMethod(nameof(EventsController.GetAll));
+        var attr = method!.GetCustomAttributes<ProducesResponseTypeAttribute>()
+            .FirstOrDefault(a => a.StatusCode == StatusCodes.Status200OK);
+        Assert.NotNull(attr);
+    }
+
+    [Fact]
+    public void GetAll_Action_HasProducesResponseType_500()
+    {
+        var method = typeof(EventsController).GetMethod(nameof(EventsController.GetAll));
+        var attr = method!.GetCustomAttributes<ProducesResponseTypeAttribute>()
+            .FirstOrDefault(a => a.StatusCode == StatusCodes.Status500InternalServerError);
+        Assert.NotNull(attr);
     }
 }

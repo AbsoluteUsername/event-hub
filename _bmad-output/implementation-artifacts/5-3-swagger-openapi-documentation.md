@@ -49,13 +49,13 @@ so that I can understand and integrate with Event Hub API without reading source
   - [x] 5.3 In `src/EventHub.Application/DTOs/EventFilter.cs`, add class-level `/// <summary>` and property docs for all 9 properties matching the query parameter names in Swagger
   - [x] 5.4 In `src/EventHub.Application/DTOs/PagedResult.cs`, add class-level and property docs: `Items`, `TotalCount`, `Page`, `PageSize`
 
-- [ ] Task 6: Unit tests — verify ProducesResponseType completeness (AC: #2, #3)
-  - [ ] 6.1 In `tests/EventHub.Api.Tests/Controllers/EventsControllerTests.cs`, add a test using reflection: `Create_Action_HasProducesResponseType_201()` — verifies `[ProducesResponseType(201)]` attribute exists on the `Create` method
-  - [ ] 6.2 Add `Create_Action_HasProducesResponseType_400()` — verifies `[ProducesResponseType(400)]` attribute exists
-  - [ ] 6.3 Add `Create_Action_HasProducesResponseType_500()` — verifies `[ProducesResponseType(500)]` attribute exists (new, added in Task 3.2)
-  - [ ] 6.4 Add `GetAll_Action_HasProducesResponseType_200()` — verifies `[ProducesResponseType(200)]` attribute exists on `GetAll`
-  - [ ] 6.5 Add `GetAll_Action_HasProducesResponseType_500()` — verifies `[ProducesResponseType(500)]` attribute exists on `GetAll` (new)
-  - [ ] 6.6 Verify `dotnet build` succeeds with zero errors and `dotnet test` passes all tests
+- [x] Task 6: Unit tests — verify ProducesResponseType completeness (AC: #2, #3)
+  - [x] 6.1 In `tests/EventHub.Api.Tests/Controllers/EventsControllerTests.cs`, add a test using reflection: `Create_Action_HasProducesResponseType_201()` — verifies `[ProducesResponseType(201)]` attribute exists on the `Create` method
+  - [x] 6.2 Add `Create_Action_HasProducesResponseType_400()` — verifies `[ProducesResponseType(400)]` attribute exists
+  - [x] 6.3 Add `Create_Action_HasProducesResponseType_500()` — verifies `[ProducesResponseType(500)]` attribute exists (new, added in Task 3.2)
+  - [x] 6.4 Add `GetAll_Action_HasProducesResponseType_200()` — verifies `[ProducesResponseType(200)]` attribute exists on `GetAll`
+  - [x] 6.5 Add `GetAll_Action_HasProducesResponseType_500()` — verifies `[ProducesResponseType(500)]` attribute exists on `GetAll` (new)
+  - [x] 6.6 Verify `dotnet build` succeeds with zero errors and `dotnet test` passes all tests
 
 ## Dev Notes
 
