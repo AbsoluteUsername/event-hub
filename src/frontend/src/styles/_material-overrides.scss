@@ -78,6 +78,67 @@ html {
   border-left: 3px solid var(--accent);
 }
 
+// Column resize (material-experimental) — required functional styles
+.mat-column-resize-table.cdk-column-resize-with-resized-column {
+  table-layout: fixed;
+}
+
+.mat-mdc-header-cell {
+  position: relative;
+}
+
+.mat-resizable {
+  box-sizing: border-box;
+}
+
+// Inline handle (visible separator line inside <th>)
+.mat-resizable-handle,
+.mat-mdc-header-cell:not(.mat-resizable)::after {
+  background: transparent;
+  bottom: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: background 120ms ease;
+  width: 1px;
+}
+
+.mat-mdc-header-cell:not(.mat-resizable)::after {
+  content: '';
+}
+
+.mat-mdc-header-row.cdk-column-resize-hover-or-active {
+  .mat-mdc-header-cell {
+    border-right: none;
+  }
+
+  .mat-mdc-header-cell:not(.mat-resizable)::after {
+    background: var(--border);
+  }
+
+  .mat-resizable-handle {
+    background: var(--accent);
+  }
+}
+
+// Overlay thumb (the CDK overlay that handles dragging)
+.mat-column-resize-overlay-thumb {
+  cursor: col-resize;
+  height: 100%;
+  user-select: none;
+  width: 100%;
+}
+
+.mat-column-resize-overlay-thumb-top {
+  width: 100%;
+}
+
+// Hide inline handle while dragging (overlay takes over)
+.mat-resizable.cdk-resizable-overlay-thumb-active > .mat-resizable-handle {
+  opacity: 0;
+  transition: none;
+}
+
 // Datepicker overrides (Glass Theme)
 .mat-datepicker-content {
   background-color: var(--bg-elevated) !important;

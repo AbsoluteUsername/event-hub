@@ -45,8 +45,9 @@ export const eventsReducer = createReducer(
   })),
   on(EventsActions.changeFilter, (state, { filter }) => ({
     ...state,
-    filters: { ...state.filters, ...filter },
+    filters: Object.keys(filter).length === 0 ? {} : { ...state.filters, ...filter },
     pagination: { ...state.pagination, page: 1 },
+    loading: true,
   })),
   on(EventsActions.changePage, (state, { page, pageSize }) => ({
     ...state,

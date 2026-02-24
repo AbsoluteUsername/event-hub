@@ -8,6 +8,8 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("appsettings.development.local.json", optional: true, reloadOnChange: true);
+
 // Serilog
 builder.Host.UseSerilog((context, config) => config
     .ReadFrom.Configuration(context.Configuration)

@@ -8,6 +8,7 @@ import {
   DestroyRef,
   NgZone,
   inject,
+  signal,
 } from '@angular/core';
 import { DOCUMENT, AsyncPipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -18,6 +19,7 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -82,6 +84,23 @@ export class EventFormComponent implements OnInit, AfterViewInit {
   isSubmitDisabled$ = this.store.select(selectIsSubmitDisabled);
   submissionStatus$ = this.store.select(selectSubmissionStatus);
 
+  /** True after the first explicit submit attempt — triggers required-error display. */
+  formSubmitted = false;
+  /** Tracks description length in real-time, independent of updateOn:'blur'. */
+  readonly descriptionLength = signal(0);
+  /** Mirror of isSubmitDisabled$ for synchronous guard in onSubmit(). */
+  private isSubmitDisabledValue = false;
+
+  /**
+   * Show field error state only when the control is dirty (user has typed
+   * something) OR an explicit submit was attempted. Prevents "Required"
+   * appearing on fields the user merely tabbed through.
+   */
+  readonly errorStateMatcher: ErrorStateMatcher = {
+    isErrorState: (control: FormControl | null): boolean =>
+      !!(control?.invalid && (control.dirty || this.formSubmitted)),
+  };
+
   eventForm = new FormGroup({
     userId: new FormControl('', {
       validators: [Validators.required, Validators.maxLength(100)],
@@ -99,11 +118,17 @@ export class EventFormComponent implements OnInit, AfterViewInit {
   eventTypes = Object.values(EventType);
 
   ngOnInit(): void {
+    this.isSubmitDisabled$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((disabled) => {
+        this.isSubmitDisabledValue = disabled;
+      });
+
     this.submissionStatus$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((status) => {
         if (status === 'success') {
-          // If animation is enabled, chip flow handles reset on 'complete'
+          // Animation enabled: chip flow handles reset on 'complete'
           if (!this.animationService.shouldAnimate()) {
             this.resetFormAndRefocus();
             this.store.dispatch(resetSubmissionStatus());
@@ -134,11 +159,10 @@ export class EventFormComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
-    if (this.submitButtonRef?.nativeElement?.getAttribute('aria-disabled') === 'true') {
-      return;
-    }
+    if (this.isSubmitDisabledValue) return;
 
     if (this.eventForm.invalid) {
+      this.formSubmitted = true;
       this.eventForm.markAllAsTouched();
       return;
     }
@@ -152,7 +176,14 @@ export class EventFormComponent implements OnInit, AfterViewInit {
     this.store.dispatch(submitEvent({ request }));
   }
 
+  /** Updates description character counter in real-time on every keystroke. */
+  onDescriptionInput(event: Event): void {
+    this.descriptionLength.set((event.target as HTMLInputElement).value.length);
+  }
+
   private resetFormAndRefocus(): void {
+    this.formSubmitted = false;
+    this.descriptionLength.set(0);
     this.eventForm.reset();
     this.eventForm.markAsPristine();
     this.eventForm.markAsUntouched();
@@ -201,19 +232,5 @@ export class EventFormComponent implements OnInit, AfterViewInit {
         this.ngZone.run(() => this.store.dispatch(chipLanded()));
         chipRef.destroy();
       });
-  }
-
-  getErrorMessage(field: string): string {
-    const control = this.eventForm.get(field);
-    if (!control) return '';
-
-    if (control.hasError('required')) {
-      return 'Required';
-    }
-    if (control.hasError('maxlength')) {
-      const maxLength = control.getError('maxlength').requiredLength;
-      return `Must be ${maxLength} characters or fewer`;
-    }
-    return '';
   }
 }

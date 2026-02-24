@@ -68,25 +68,36 @@ describe('EventFormComponent', () => {
     expect(submitButton?.textContent?.trim()).toContain('Submit Event');
   });
 
-  it('should show Required error for empty userId on blur', () => {
-    const userIdInput = fixture.nativeElement.querySelector('input[formControlName="userId"]');
-    userIdInput.focus();
-    userIdInput.blur();
-    userIdInput.dispatchEvent(new Event('blur'));
-    fixture.detectChanges();
+  describe('Validation — empty field blur behaviour', () => {
+    it('should NOT show Required error for empty userId when user only focused and blurred (no data entered)', () => {
+      const userIdInput = fixture.nativeElement.querySelector('input[formControlName="userId"]');
+      userIdInput.focus();
+      userIdInput.blur();
+      userIdInput.dispatchEvent(new Event('blur'));
+      component.eventForm.get('userId')?.markAsTouched();
+      fixture.detectChanges();
 
-    component.eventForm.get('userId')?.markAsTouched();
-    fixture.detectChanges();
+      const matErrors = fixture.nativeElement.querySelectorAll('mat-error');
+      const errorTexts = Array.from(matErrors as NodeListOf<Element>).map((el) => el.textContent?.trim());
+      expect(errorTexts).not.toContain('Required');
+    });
 
-    const matErrors = fixture.nativeElement.querySelectorAll('mat-error');
-    const errorTexts = Array.from(matErrors as NodeListOf<Element>).map((el) => el.textContent?.trim());
-    expect(errorTexts).toContain('Required');
+    it('should show Required errors for all empty fields after explicit submit attempt', () => {
+      component.onSubmit();
+      fixture.detectChanges();
+
+      expect(component.formSubmitted).toBeTrue();
+      const matErrors = fixture.nativeElement.querySelectorAll('mat-error');
+      const errorTexts = Array.from(matErrors as NodeListOf<Element>).map((el) => el.textContent?.trim());
+      expect(errorTexts).toContain('Required');
+    });
   });
 
   it('should show maxlength error for userId exceeding 100 characters', () => {
     const control = component.eventForm.get('userId')!;
     control.setValue('a'.repeat(101));
     control.markAsTouched();
+    control.markAsDirty();
     fixture.detectChanges();
 
     const matErrors = fixture.nativeElement.querySelectorAll('mat-error');
@@ -98,6 +109,7 @@ describe('EventFormComponent', () => {
     const control = component.eventForm.get('description')!;
     control.setValue('a'.repeat(501));
     control.markAsTouched();
+    control.markAsDirty();
     fixture.detectChanges();
 
     const matErrors = fixture.nativeElement.querySelectorAll('mat-error');
@@ -123,13 +135,14 @@ describe('EventFormComponent', () => {
     );
   });
 
-  it('should NOT dispatch when form is invalid and should mark all fields as touched', () => {
+  it('should NOT dispatch when form is invalid, should mark all fields touched, and set formSubmitted', () => {
     component.onSubmit();
 
     expect(store.dispatch).not.toHaveBeenCalledWith(jasmine.objectContaining({ type: '[Event Form] Submit Event' }));
     expect(component.eventForm.get('userId')?.touched).toBeTrue();
     expect(component.eventForm.get('type')?.touched).toBeTrue();
     expect(component.eventForm.get('description')?.touched).toBeTrue();
+    expect(component.formSubmitted).toBeTrue();
   });
 
   it('should set aria-disabled on Submit button when isSubmitDisabled is true (remains focusable)', () => {
@@ -151,7 +164,7 @@ describe('EventFormComponent', () => {
     expect(submitButton.getAttribute('aria-busy')).toBe('true');
   });
 
-  it('should NOT dispatch submitEvent when aria-disabled is set (double-submit guard)', () => {
+  it('should NOT dispatch submitEvent when isSubmitDisabled is true (double-submit guard via store)', () => {
     store.overrideSelector(selectIsSubmitDisabled, true);
     store.refreshState();
     fixture.detectChanges();
@@ -177,7 +190,7 @@ describe('EventFormComponent', () => {
     expect(submitButton.disabled).toBeFalse();
   });
 
-  it('should reset form on submitEventSuccess status', fakeAsync(() => {
+  it('should reset form on submitEventSuccess status (no animation)', fakeAsync(() => {
     component.eventForm.get('userId')!.setValue('testUser');
     component.eventForm.get('type')!.setValue(EventType.PageView);
     component.eventForm.get('description')!.setValue('Test');
@@ -190,6 +203,26 @@ describe('EventFormComponent', () => {
     expect(component.eventForm.get('type')?.value).toBeFalsy();
     expect(component.eventForm.get('description')?.value).toBeFalsy();
     expect(store.dispatch).toHaveBeenCalledWith(resetSubmissionStatus());
+    expect(component.formSubmitted).toBeFalse();
+    expect(component.descriptionLength()).toBe(0);
+  }));
+
+  it('should reset form on complete status (animation path)', fakeAsync(() => {
+    component.eventForm.get('userId')!.setValue('testUser');
+    component.eventForm.get('type')!.setValue(EventType.PageView);
+    component.eventForm.get('description')!.setValue('Test');
+    component.formSubmitted = true;
+
+    store.overrideSelector(selectSubmissionStatus, 'complete');
+    store.refreshState();
+    tick();
+
+    expect(component.eventForm.get('userId')?.value).toBeFalsy();
+    expect(component.eventForm.get('type')?.value).toBeFalsy();
+    expect(component.eventForm.get('description')?.value).toBeFalsy();
+    expect(store.dispatch).toHaveBeenCalledWith(resetSubmissionStatus());
+    expect(component.formSubmitted).toBeFalse();
+    expect(component.descriptionLength()).toBe(0);
   }));
 
   it('should preserve form values on submitEventFailure status', fakeAsync(() => {
@@ -235,21 +268,46 @@ describe('EventFormComponent', () => {
       expect(store.dispatch).toHaveBeenCalledWith(chipLanded());
     }));
 
-    it('should NOT dispatch chipLanded early on desktop breakpoint', fakeAsync(() => {
+    it('should NOT dispatch chipLanded immediately on desktop breakpoint', fakeAsync(() => {
       animationService.shouldAnimate.and.returnValue(true);
       mockBreakpointObserver.isMatched.and.returnValue(false); // not mobile
 
-      // On desktop, chip animation is launched (but chip creation would need DOM, so this just verifies no early chipLanded)
-      expect(mockBreakpointObserver.isMatched).toBeDefined();
+      // On desktop, isMatched returns false so chipLanded is NOT dispatched early
+      const mockEvent = { id: 'test-id', userId: 'user1', type: EventType.Click, description: 'test', createdAt: '2026-01-01' };
+      actions$.next(submitEventSuccess({ event: mockEvent }));
+      tick();
+
+      expect(store.dispatch).not.toHaveBeenCalledWith(chipLanded());
     }));
   });
 
-  it('should trigger onSubmit when Enter key is pressed on Description field', () => {
+  it('should submit form when Enter key is pressed (via form ngSubmit)', () => {
     spyOn(component, 'onSubmit');
-    const descriptionInput = fixture.nativeElement.querySelector('input[formControlName="description"]');
-    descriptionInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    const formEl = fixture.nativeElement.querySelector('form');
+    formEl.dispatchEvent(new Event('submit'));
     fixture.detectChanges();
 
     expect(component.onSubmit).toHaveBeenCalled();
   });
+
+  it('should update description character counter in real-time on input', () => {
+    const descriptionInput = fixture.nativeElement.querySelector('input[formControlName="description"]');
+    descriptionInput.value = 'Hello';
+    descriptionInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(component.descriptionLength()).toBe(5);
+    const hint = fixture.nativeElement.querySelector('mat-hint');
+    expect(hint?.textContent).toContain('5 / 500');
+  });
+
+  it('should reset description counter to 0 after form reset', fakeAsync(() => {
+    component.descriptionLength.set(42);
+
+    store.overrideSelector(selectSubmissionStatus, 'success');
+    store.refreshState();
+    tick();
+
+    expect(component.descriptionLength()).toBe(0);
+  }));
 });

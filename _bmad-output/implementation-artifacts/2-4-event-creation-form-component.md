@@ -1,6 +1,6 @@
 # Story 2.4: Event Creation Form Component
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -573,6 +573,7 @@ tests/                                       ← No changes (.NET tests)
 ## Change Log
 
 - 2026-02-23: Implemented Event Creation Form Component — standalone Angular component with Reactive Forms, NgRx integration, Glass theme styling, client-side validation on blur, success/failure handling, auto-focus, and 12 unit tests. All 33 tests pass (21 existing + 12 new). Build and lint clean.
+- 2026-02-24: Code review fixes — custom ErrorStateMatcher (required errors no longer show on empty-field blur, only on dirty or explicit submit); real-time description character counter via `(input)` event + `descriptionLength` signal; removed double `onSubmit()` on Enter key (form ngSubmit handles it); replaced DOM-attribute submit guard with `isSubmitDisabledValue` store mirror; removed dead `getErrorMessage()` method; extracted magic colors to `--accent-dark`, `--accent-glow`, `--accent-glow-hover` CSS variables; removed dead `selectSubmissionChipState` selector; added tests for complete-status reset, counter real-time update, and meaningful desktop-breakpoint assertion. 242 tests pass.
 
 ## Dev Agent Record
 
@@ -614,3 +615,11 @@ Modified files:
 - src/frontend/src/app/app.component.spec.ts (added MockStore provider and NoopAnimationsModule)
 - _bmad-output/implementation-artifacts/sprint-status.yaml (status: in-progress → review)
 - _bmad-output/implementation-artifacts/2-4-event-creation-form-component.md (story file updates)
+
+Code review fixes (2026-02-24):
+- src/frontend/src/app/features/event-form/event-form.component.ts (ErrorStateMatcher, formSubmitted, descriptionLength signal, isSubmitDisabledValue guard, removed getErrorMessage)
+- src/frontend/src/app/features/event-form/event-form.component.html (errorStateMatcher binding, real-time counter, removed keydown.enter)
+- src/frontend/src/app/features/event-form/event-form.component.scss (CSS variables for accent-dark/accent-glow)
+- src/frontend/src/app/features/event-form/event-form.component.spec.ts (updated and new tests)
+- src/frontend/src/app/store/submission/submission.selectors.ts (removed dead selectSubmissionChipState)
+- src/frontend/src/styles/_variables.scss (added --accent-dark, --accent-glow, --accent-glow-hover)

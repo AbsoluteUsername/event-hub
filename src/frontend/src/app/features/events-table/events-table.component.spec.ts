@@ -183,6 +183,28 @@ describe('EventsTableComponent', () => {
       const progressBar = fixture.nativeElement.querySelector('mat-progress-bar');
       expect(progressBar).toBeNull();
     });
+
+    it('should add .loading class to table-wrapper when loading is true with existing data', () => {
+      store.overrideSelector(selectEventsLoading, true);
+      store.overrideSelector(selectEvents, mockEvents);
+      store.refreshState();
+      fixture.detectChanges();
+
+      const tableWrapper = fixture.nativeElement.querySelector('.table-wrapper');
+      expect(tableWrapper).toBeTruthy();
+      expect(tableWrapper.classList.contains('loading')).toBeTrue();
+    });
+
+    it('should NOT have .loading class on table-wrapper when loading is false', () => {
+      store.overrideSelector(selectEventsLoading, false);
+      store.overrideSelector(selectEvents, mockEvents);
+      store.refreshState();
+      fixture.detectChanges();
+
+      const tableWrapper = fixture.nativeElement.querySelector('.table-wrapper');
+      expect(tableWrapper).toBeTruthy();
+      expect(tableWrapper.classList.contains('loading')).toBeFalse();
+    });
   });
 
   // Empty state tests (AC: #2, #3)
@@ -232,6 +254,28 @@ describe('EventsTableComponent', () => {
     it('should dispatch changeFilter with empty filter object when onClearFilters is called', () => {
       component.onClearFilters();
       expect(store.dispatch).toHaveBeenCalledWith(changeFilter({ filter: {} }));
+    });
+
+    it('should show no-data empty state after clearing filters when results are empty', () => {
+      // Simulate: filters active → no results → user clicks "Clear all filters"
+      store.overrideSelector(selectEventsFilters, { type: EventType.Click });
+      store.overrideSelector(selectEvents, []);
+      store.overrideSelector(selectEventsLoading, false);
+      store.refreshState();
+      fixture.detectChanges();
+
+      // Empty state with "no-results" shown
+      const emptyState = fixture.nativeElement.querySelector('app-empty-state');
+      expect(emptyState?.textContent).toContain('No events match your filters');
+
+      // After clearing: loading starts, filters cleared, results load
+      store.overrideSelector(selectEventsFilters, {});
+      store.overrideSelector(selectEventsLoading, true);
+      store.refreshState();
+      fixture.detectChanges();
+
+      // Progress bar should be visible
+      expect(fixture.nativeElement.querySelector('mat-progress-bar')).toBeTruthy();
     });
   });
 

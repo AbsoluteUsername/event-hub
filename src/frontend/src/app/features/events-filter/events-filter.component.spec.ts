@@ -187,22 +187,42 @@ describe('EventsFilterComponent', () => {
     });
   });
 
-  it('should dispatch filter with ISO strings when both dates selected', () => {
+  it('should dispatch filter with ISO strings when both dates selected', fakeAsync(() => {
     const fromDate = new Date('2026-01-01');
     const toDate = new Date('2026-01-31');
+    const toEndOfDay = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 23, 59, 59, 999);
 
     component.filterForm.controls.dateFrom.setValue(fromDate);
     component.filterForm.controls.dateTo.setValue(toDate);
+    tick(0); // flush debounceTime(0)
 
     expect(store.dispatch).toHaveBeenCalledWith(
       changeFilter({
         filter: {
           from: fromDate.toISOString(),
-          to: toDate.toISOString(),
+          to: toEndOfDay.toISOString(),
         },
       })
     );
-  });
+  }));
+
+  it('should use end-of-day for "to" date so same-day range includes all events of that day', fakeAsync(() => {
+    const sameDay = new Date(2026, 1, 24); // 2026-02-24 local midnight
+    const endOfDay = new Date(2026, 1, 24, 23, 59, 59, 999);
+
+    component.filterForm.controls.dateFrom.setValue(sameDay);
+    component.filterForm.controls.dateTo.setValue(sameDay);
+    tick(0);
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      changeFilter({
+        filter: {
+          from: sameDay.toISOString(),
+          to: endOfDay.toISOString(),
+        },
+      })
+    );
+  }));
 
   describe('Date range Escape key handler', () => {
     it('should clear date range form controls when clearDateRange() is called', () => {
@@ -215,15 +235,16 @@ describe('EventsFilterComponent', () => {
       expect(component.filterForm.controls.dateTo.value).toBeNull();
     });
 
-    it('should dispatch changeFilter with empty from/to when clearDateRange() is called', () => {
+    it('should dispatch changeFilter with empty from/to when clearDateRange() is called', fakeAsync(() => {
       (store.dispatch as jasmine.Spy).calls.reset();
 
       component.clearDateRange();
+      tick(0); // flush debounceTime(0)
 
       expect(store.dispatch).toHaveBeenCalledWith(
         changeFilter({ filter: { from: undefined, to: undefined } })
       );
-    });
+    }));
 
     it('should call clearDateRange() when Escape pressed on From date input', () => {
       spyOn(component, 'clearDateRange');

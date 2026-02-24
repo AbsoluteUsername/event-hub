@@ -151,12 +151,17 @@ export class EventsFilterComponent {
         );
       });
 
-    // Date range — immediate when either changes
+    // Date range — debounceTime(0) batches simultaneous mat-date-range-picker emissions
+    // (Angular Material can fire dateTo.valueChanges before dateFrom is committed,
+    //  causing a stale read with from=undefined if we don't wait for both to settle)
     merge(
       this.filterForm.controls.dateFrom.valueChanges,
       this.filterForm.controls.dateTo.valueChanges
     )
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        debounceTime(0),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe(() => {
         const from = this.filterForm.controls.dateFrom.value;
         const to = this.filterForm.controls.dateTo.value;
@@ -164,7 +169,9 @@ export class EventsFilterComponent {
           changeFilter({
             filter: {
               from: from ? from.toISOString() : undefined,
-              to: to ? to.toISOString() : undefined,
+              to: to
+                ? new Date(to.getFullYear(), to.getMonth(), to.getDate(), 23, 59, 59, 999).toISOString()
+                : undefined,
             },
           })
         );

@@ -1,6 +1,6 @@
 # Story 3.6: Loading & Empty States
 
-Status: review
+Status: done
 Story-Key: 3-6-loading-and-empty-states
 Epic: 3 — Event Discovery & Table Display (Full Stack)
 Date: 2026-02-24
@@ -484,6 +484,7 @@ Commit this story as: `feat: 3-6-loading-and-empty-states - Loading & Empty Stat
 ## Change Log
 
 - 2026-02-24: Implemented all 7 tasks for Loading & Empty States story. Created EmptyStateComponent with no-data and no-results modes, integrated mat-progress-bar loading indicator and empty state display logic into EventsTableComponent, added comprehensive unit tests (128 total pass), all accessibility requirements met, build/lint/tests verified.
+- 2026-02-24: Code review fixes — (H1) `changeFilter` reducer now sets `loading: true` immediately so progress bar appears within 16ms of filter change, not after 300ms debounce. (H2) `changeFilter({ filter: {} })` now resets filters completely (empty object = replace, not merge). (M1) Table wrapper gets `.loading` CSS class during loading (opacity 0.4 + pointer-events none) to clearly indicate stale content. Added 2 new tests for loading class behavior and clear-filters UX flow.
 
 ## Dev Agent Record
 

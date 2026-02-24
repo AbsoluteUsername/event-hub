@@ -21,25 +21,23 @@
         </app-empty-state>
       }
     } @else {
-      <div class="table-wrapper">
-        <table mat-table [dataSource]="(events$ | async) ?? []" matSort
+      <div class="table-wrapper" [class.loading]="loading$ | async">
+        <table mat-table columnResize [dataSource]="(events$ | async) ?? []" matSort
                [trackBy]="trackById"
                (matSortChange)="onSortChange($event)"
                matSortActive="createdAt" matSortDirection="desc">
 
           <!-- Id Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header resizable [matResizableMinWidthPx]="60">Id</th>
             <td mat-cell *matCellDef="let row">
-              <span class="mono truncated-id" [matTooltip]="row.id">
-                {{ row.id | slice:0:8 }}…
-              </span>
+              <span class="mono" [matTooltip]="row.id">{{ row.id }}</span>
             </td>
           </ng-container>
 
           <!-- UserId Column -->
           <ng-container matColumnDef="userId">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>UserId</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header resizable [matResizableMinWidthPx]="80">UserId</th>
             <td mat-cell *matCellDef="let row">
               <span class="mono">{{ row.userId }}</span>
             </td>
@@ -47,7 +45,7 @@
 
           <!-- Type Column -->
           <ng-container matColumnDef="type">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header resizable [matResizableMinWidthPx]="80">Type</th>
             <td mat-cell *matCellDef="let row">
               <app-event-type-chip [type]="row.type" />
             </td>
@@ -55,13 +53,13 @@
 
           <!-- Description Column -->
           <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header resizable [matResizableMinWidthPx]="100">Description</th>
             <td mat-cell *matCellDef="let row">{{ row.description }}</td>
           </ng-container>
 
           <!-- CreatedAt Column -->
           <ng-container matColumnDef="createdAt">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Created At</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header resizable [matResizableMinWidthPx]="100">Created At</th>
             <td mat-cell *matCellDef="let row">
               <span class="mono">{{ row.createdAt }}</span>
             </td>

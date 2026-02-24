@@ -18,11 +18,6 @@ export const selectIsSubmitting = createSelector(
   (state) => state.status === 'submitting'
 );
 
-export const selectSubmissionChipState = createSelector(
-  selectSubmissionStatus,
-  (status) => status
-);
-
 export const selectIsSubmitDisabled = createSelector(
   selectSubmissionState,
   (state) =>

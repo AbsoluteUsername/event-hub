@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef, inject, signal } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, ViewChild, ElementRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Store } from '@ngrx/store';
@@ -7,7 +7,8 @@ import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { AsyncPipe, SlicePipe } from '@angular/common';
+import { MatColumnResizeModule } from '@angular/material-experimental/column-resize';
+import { AsyncPipe } from '@angular/common';
 import { GlassPanelComponent } from '../../shared/components/glass-panel/glass-panel.component';
 import { EventTypeChipComponent } from '../../shared/components/event-type-chip/event-type-chip.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
@@ -34,16 +35,16 @@ import { EventResponse } from '../../shared/models/event.model';
     MatPaginatorModule,
     MatTooltipModule,
     MatProgressBarModule,
+    MatColumnResizeModule,
     GlassPanelComponent,
     EventTypeChipComponent,
     EmptyStateComponent,
     AsyncPipe,
-    SlicePipe,
   ],
   templateUrl: './events-table.component.html',
   styleUrl: './events-table.component.scss',
 })
-export class EventsTableComponent implements OnInit, AfterViewChecked {
+export class EventsTableComponent implements OnInit, AfterViewInit, AfterViewChecked {
   private readonly store = inject(Store);
   private readonly animationService = inject(AnimationService);
   private readonly elementRef = inject(ElementRef);
@@ -88,11 +89,29 @@ export class EventsTableComponent implements OnInit, AfterViewChecked {
         this.displayedColumns = result.breakpoints['(min-width: 1024px)']
           ? ['id', 'userId', 'type', 'description', 'createdAt']
           : ['userId', 'type', 'createdAt'];
+        // Reset explicit widths so they're recaptured after column set changes
+        setTimeout(() => this.captureColumnWidths(true));
       });
   }
 
   ngOnInit(): void {
     this.store.dispatch(loadEvents());
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.captureColumnWidths());
+  }
+
+  private captureColumnWidths(reset = false): void {
+    const ths = this.elementRef.nativeElement.querySelectorAll(
+      'th.mat-mdc-header-cell'
+    ) as NodeListOf<HTMLElement>;
+    ths.forEach(th => {
+      if (reset) th.style.removeProperty('width');
+      if (!th.style.width && th.offsetWidth > 0) {
+        th.style.width = th.offsetWidth + 'px';
+      }
+    });
   }
 
   onClearFilters(): void {
